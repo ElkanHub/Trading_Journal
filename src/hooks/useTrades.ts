@@ -1,33 +1,36 @@
 import { useState, useEffect } from 'react';
-import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import { journalService } from '@/lib/journalService';
+import { useAuth } from './useAuth';
 import { Trade } from '@/types/trade';
 
 export const useTrades = () => {
+  const { user } = useAuth();
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadTrades();
-  }, []);
+    if (user) {
+      loadTrades();
+    }
+  }, [user]);
 
   const loadTrades = async () => {
-    const querySnapshot = await getDocs(collection(db, 'trades'));
-    const tradesData = querySnapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data()
-    })) as Trade[];
+    if (!user) return;
+    setLoading(true);
+    const tradesData = await journalService.getTrades(user.uid);
     setTrades(tradesData);
     setLoading(false);
   };
 
   const addTrade = async (trade: Omit<Trade, 'id'>) => {
-    const docRef = await addDoc(collection(db, 'trades'), trade);
-    setTrades([{ ...trade, id: docRef.id }, ...trades]);
+    if (!user) return;
+    const newTrade = await journalService.addTrade(user.uid, trade);
+    setTrades([newTrade, ...trades]);
   };
 
   const deleteTrade = async (id: string) => {
-    await deleteDoc(doc(db, 'trades', id));
+    if (!user) return;
+    await journalService.deleteTrade(user.uid, id);
     setTrades(trades.filter(t => t.id !== id));
   };
 

@@ -1,0 +1,15 @@
+{
+  "users": {
+    "test-uid-123": {
+      "trades": {
+        "trade_1": {
+          "pair": "EUR/USD",
+          "entry": 1.1234,
+          "exit": 1.125,
+          "profit": 20,
+          "timestamp": 1696158900
+        }
+      }
+    }
+  }
+}

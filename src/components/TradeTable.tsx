@@ -57,7 +57,7 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
               }`}>
                 {trade.profitLossPips > 0 ? '+' : ''}{trade.profitLossPips.toFixed(1)}
               </td>
-              <td className={`py-3 px-4 text-right font-bold ${
+              <td className={`py-3 px-4 text-right font-bold text-sm ${
                 trade.profitLoss > 0 ? 'text-emerald-500' : 'text-red-500'
               }`}>
                 {trade.profitLoss > 0 ? '+' : ''}${trade.profitLoss.toFixed(2)}

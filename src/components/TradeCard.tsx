@@ -9,6 +9,13 @@ interface TradeCardProps {
 
 export const TradeCard: React.FC<TradeCardProps> = ({ trade, onEdit, onDelete }) => {
   const isProfit = trade.profitLoss > 0;
+
+  const getFontSizeClass = (val: number) => {
+    const len = String(val.toFixed(2)).length;
+    if (len > 10) return 'text-lg';
+    if (len > 7) return 'text-xl';
+    return 'text-2xl';
+  };
   
   return (
     <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-all">
@@ -20,7 +27,7 @@ export const TradeCard: React.FC<TradeCardProps> = ({ trade, onEdit, onDelete })
           </span>
         </div>
         <div className={`text-right ${isProfit ? 'text-emerald-500' : 'text-red-500'}`}>
-          <p className="text-xl font-bold">{isProfit ? '+' : ''}{trade.profitLoss.toFixed(2)}</p>
+          <p className={`font-bold ${getFontSizeClass(trade.profitLoss)}`}>{isProfit ? '+' : ''}{trade.profitLoss.toFixed(2)}</p>
           <p className="text-xs">{isProfit ? '+' : ''}{trade.profitLossPips} pips</p>
         </div>
       </div>

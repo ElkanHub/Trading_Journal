@@ -29,17 +29,26 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel }
     
     const entry = parseFloat(formData.entryPrice);
     const exit = parseFloat(formData.exitPrice);
-    const pips = formData.direction === 'long' ? (exit - entry) * 10000 : (entry - exit) * 10000;
-    const pl = pips * parseFloat(formData.lotSize) * 10;
+    const sl = parseFloat(formData.stopLoss);
+    const tp = parseFloat(formData.takeProfit);
+    const lotSize = parseFloat(formData.lotSize);
+
+    const pips = formData.pair.includes('JPY') 
+      ? (formData.direction === 'long' ? (exit - entry) * 100 : (entry - exit) * 100)
+      : (formData.direction === 'long' ? (exit - entry) * 10000 : (entry - exit) * 10000);
+
+    const pl = pips * lotSize;
+
+    const riskRewardRatio = Math.abs((tp - entry) / (entry - sl));
     
     const trade: Omit<Trade, 'id'> = {
       pair: formData.pair,
       direction: formData.direction,
       entryPrice: entry,
       exitPrice: exit,
-      lotSize: parseFloat(formData.lotSize),
-      stopLoss: parseFloat(formData.stopLoss),
-      takeProfit: parseFloat(formData.takeProfit),
+      lotSize: lotSize,
+      stopLoss: sl,
+      takeProfit: tp,
       entryTime: formData.entryTime,
       exitTime: formData.exitTime,
       profitLoss: pl,
@@ -49,11 +58,27 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel }
       confidence: formData.confidence,
       notes: formData.notes,
       tags: formData.tags.split(',').map(t => t.trim()),
-      riskRewardRatio: Math.abs((parseFloat(formData.takeProfit) - entry) / (entry - parseFloat(formData.stopLoss))),
+      riskRewardRatio: riskRewardRatio,
       outcome: pl > 0 ? 'win' : pl < 0 ? 'loss' : 'breakeven'
     };
     
     onSubmit(trade);
+    setFormData({
+      pair: 'EUR/USD',
+      direction: 'long',
+      entryPrice: '',
+      exitPrice: '',
+      lotSize: '',
+      stopLoss: '',
+      takeProfit: '',
+      entryTime: '',
+      exitTime: '',
+      strategy: '',
+      emotionalState: '',
+      confidence: 5,
+      notes: '',
+      tags: ''
+    });
   };
 
   return (
