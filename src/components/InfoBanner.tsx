@@ -10,12 +10,11 @@ export const InfoBanner: React.FC = () => {
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-2xl">🔥</span>
-            <h3 className="text-emerald-400 font-semibold">Firebase Integration Ready</h3>
+            <span className="text-2xl">🔐</span>
+            <h3 className="text-emerald-400 font-semibold">Secure Data, Easy Access</h3>
           </div>
           <p className="text-slate-300 text-sm">
-            This app is architected for easy Firebase/Supabase integration. Your trades are currently stored locally. 
-            Check the README.md for step-by-step integration instructions.
+            Your data is encrypted and stored securely. Only you have access to your information.
           </p>
         </div>
         <button 

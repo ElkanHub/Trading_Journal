@@ -30,7 +30,7 @@ export const FeatureSection: React.FC = () => {
     {
       icon: '💾',
       title: 'Data Export',
-      description: 'Export your trading data for backup or analysis in external tools (Firebase ready).'
+      description: 'Export your trading data for backup or analysis in external tools (Firebase ready). [Rolling out soon]'
     }
   ];
 

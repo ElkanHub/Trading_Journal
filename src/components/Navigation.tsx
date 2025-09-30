@@ -1,4 +1,5 @@
 import React from 'react';
+import {BarChartBig, PenToolIcon,LineChartIcon} from 'lucide-react';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 
@@ -10,16 +11,16 @@ interface NavigationProps {
 export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange }) => {
   const [signOut] = useSignOut(auth);
   const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'trades', label: 'All Trades', icon: '📝' },
-    { id: 'analytics', label: 'Analytics', icon: '📈' }
+    { id: 'dashboard', label: 'Dashboard', icon: <BarChartBig /> },
+    { id: 'trades', label: 'All Trades', icon: <PenToolIcon /> },
+    { id: 'analytics', label: 'Analytics', icon: <LineChartIcon /> }
   ];
 
   return (
     <nav className="bg-slate-800 border-b border-slate-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
+          <div className="mr-2 md:m-0 flex items-center">
             <h1 className="text-2xl font-bold text-white">
               Forex<span className="text-emerald-400">Journal</span>
             </h1>
@@ -30,7 +31,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
               <button
                 key={item.id}
                 onClick={() => onViewChange(item.id as any)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`items-center flex justify-center md:flex p-2 md:px-4 md:py-2 rounded-lg font-medium transition-colors ${
                   currentView === item.id
                     ? 'bg-emerald-600 text-white'
                     : 'text-slate-400 hover:text-white hover:bg-slate-700'
@@ -42,7 +43,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
             ))}
             <button
               onClick={() => signOut()}
-              className="px-4 py-2 rounded-lg font-medium transition-colors bg-red-600 text-white hover:bg-red-500"
+              className=" p-1 md:px-4 md:py-2 rounded-lg font-medium transition-colors bg-red-600 text-white hover:bg-red-500"
             >
               Sign Out
             </button>
