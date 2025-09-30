@@ -1,4 +1,6 @@
 import React from 'react';
+import { useSignOut } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
 
 interface NavigationProps {
   currentView: 'dashboard' | 'trades' | 'analytics';
@@ -6,6 +8,7 @@ interface NavigationProps {
 }
 
 export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChange }) => {
+  const [signOut] = useSignOut(auth);
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: '📊' },
     { id: 'trades', label: 'All Trades', icon: '📝' },
@@ -22,7 +25,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
             </h1>
           </div>
           
-          <div className="flex space-x-1">
+          <div className="flex items-center space-x-1">
             {navItems.map((item) => (
               <button
                 key={item.id}
@@ -37,6 +40,12 @@ export const Navigation: React.FC<NavigationProps> = ({ currentView, onViewChang
                 <span className="hidden sm:inline">{item.label}</span>
               </button>
             ))}
+            <button
+              onClick={() => signOut()}
+              className="px-4 py-2 rounded-lg font-medium transition-colors bg-red-600 text-white hover:bg-red-500"
+            >
+              Sign Out
+            </button>
           </div>
         </div>
       </div>

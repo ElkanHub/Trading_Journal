@@ -1,5 +1,12 @@
 import React from 'react';
 import { Trade } from '@/types/trade';
+import { MoreHorizontal } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface TradeTableProps {
   trades: Trade[];
@@ -21,6 +28,7 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
             <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">Pips</th>
             <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">P/L</th>
             <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">Strategy</th>
+            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -55,6 +63,26 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
                 {trade.profitLoss > 0 ? '+' : ''}${trade.profitLoss.toFixed(2)}
               </td>
               <td className="py-3 px-4 text-slate-400 text-sm">{trade.strategy}</td>
+              <td className="py-3 px-4 text-right">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="p-1 text-slate-400 hover:text-white">
+                      <MoreHorizontal size={18} />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => onEdit && onEdit(trade)}>
+                      Edit
+                    </DropdownMenuItem>
+                    <DropdownMenuItem 
+                      onClick={() => onDelete && onDelete(trade.id)}
+                      className="text-red-500"
+                    >
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </td>
             </tr>
           ))}
         </tbody>

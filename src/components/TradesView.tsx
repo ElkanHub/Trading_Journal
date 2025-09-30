@@ -7,9 +7,11 @@ import { EmptyState } from './EmptyState';
 interface TradesViewProps {
   trades: Trade[];
   onAddTrade: () => void;
+  onDeleteTrade: (id: string) => void;
+  loading: boolean;
 }
 
-export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade }) => {
+export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDeleteTrade, loading }) => {
   const [filters, setFilters] = useState({
     pair: '',
     strategy: '',
@@ -26,6 +28,10 @@ export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade }) =>
     if (filters.dateTo && new Date(trade.entryTime) > new Date(filters.dateTo)) return false;
     return true;
   });
+
+  if (loading) {
+    return <p className="text-white">Loading trades...</p>;
+  }
 
   return (
     <div className="space-y-6">

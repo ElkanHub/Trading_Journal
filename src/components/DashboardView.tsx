@@ -8,10 +8,15 @@ interface DashboardViewProps {
   trades: Trade[];
   stats: TradeStats;
   onAddTrade: () => void;
+  loading: boolean;
 }
 
-export const DashboardView: React.FC<DashboardViewProps> = ({ trades, stats, onAddTrade }) => {
+export const DashboardView: React.FC<DashboardViewProps> = ({ trades, stats, onAddTrade, loading }) => {
   const recentTrades = trades.slice(0, 6);
+
+  if (loading) {
+    return <p className="text-white">Loading dashboard...</p>;
+  }
 
   return (
     <div className="space-y-6">

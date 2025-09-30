@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Trade } from '@/types/trade';
-import { sampleTrades } from '@/data/sampleTrades';
+import { useTrades } from '@/hooks/useTrades';
 import { calculateStats } from '@/utils/tradeCalculations';
 import { HeroSection } from './HeroSection';
 import { Navigation } from './Navigation';
@@ -14,18 +14,14 @@ import { AddTradeForm } from './AddTradeForm';
 import { InfoBanner } from './InfoBanner';
 
 const AppLayout: React.FC = () => {
-  const [trades, setTrades] = useState<Trade[]>(sampleTrades);
+  const { trades, loading, addTrade, deleteTrade } = useTrades();
   const [currentView, setCurrentView] = useState<'hero' | 'dashboard' | 'trades' | 'analytics'>('hero');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const stats = calculateStats(trades);
 
   const handleAddTrade = (newTrade: Omit<Trade, 'id'>) => {
-    const trade: Trade = {
-      ...newTrade,
-      id: Date.now().toString()
-    };
-    setTrades([trade, ...trades]);
+    addTrade(newTrade);
     setIsModalOpen(false);
   };
 
@@ -59,6 +55,7 @@ const AppLayout: React.FC = () => {
             trades={trades} 
             stats={stats}
             onAddTrade={() => setIsModalOpen(true)}
+            loading={loading}
           />
         )}
         
@@ -66,11 +63,13 @@ const AppLayout: React.FC = () => {
           <TradesView 
             trades={trades}
             onAddTrade={() => setIsModalOpen(true)}
+            onDeleteTrade={deleteTrade}
+            loading={loading}
           />
         )}
         
         {currentView === 'analytics' && (
-          <AnalyticsView trades={trades} stats={stats} />
+          <AnalyticsView trades={trades} stats={stats} loading={loading} />
         )}
       </main>
 

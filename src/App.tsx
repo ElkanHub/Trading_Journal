@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -7,9 +6,11 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import LoginPage from "./pages/Login";
+import { LoginPage } from "./pages/Login";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
+
+import { SignUpPage } from "./pages/SignUp";
 
 const queryClient = new QueryClient();
 
@@ -29,8 +30,9 @@ const App = () => {
           <BrowserRouter>
             <Routes>
               <Route path="/login" element={<LoginPage />} />
-              <Route 
-                path="/" 
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route
+                path="/"
                 element={user ? <Index /> : <Navigate to="/login" />}
               />
               <Route path="*" element={<NotFound />} />

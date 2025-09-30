@@ -4,9 +4,14 @@ import { Trade, TradeStats } from '@/types/trade';
 interface AnalyticsViewProps {
   trades: Trade[];
   stats: TradeStats;
+  loading: boolean;
 }
 
-export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats }) => {
+export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loading }) => {
+  if (loading) {
+    return <p className="text-white">Loading analytics...</p>;
+  }
+
   const pairPerformance = trades.reduce((acc, trade) => {
     if (!acc[trade.pair]) {
       acc[trade.pair] = { wins: 0, losses: 0, totalPL: 0 };
