@@ -26,13 +26,23 @@ A professional-grade web application for Forex traders to track, analyze, and im
 - Intuitive navigation and modal-based forms
 - Professional trading platform aesthetic
 
+## Next.js Migration
+
+This project has been migrated from Vite to Next.js to take advantage of its features like Server-Side Rendering (SSR), Static Site Generation (SSG), and improved SEO.
+
+### Key Changes
+
+- **Routing**: Replaced `react-router-dom` with Next.js's App Router.
+- **Project Structure**: The project now follows the Next.js `app` directory structure.
+- **Configuration**: Replaced `vite.config.ts` with `next.config.js`.
+- **Dependencies**: Updated dependencies to be compatible with Next.js and React 19.
+
 ## 🔧 Technology Stack
 
-- **Frontend**: React 18 + TypeScript
+- **Framework**: Next.js 14
+- **Frontend**: React 19 + TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui components
-- **Build Tool**: Vite
 - **State Management**: React Hooks (useState)
-- **Routing**: React Router DOM
 - **Database Ready**: Prepared for Firebase/Supabase integration
 
 ## 📦 Installation
@@ -46,6 +56,9 @@ npm run dev
 
 # Build for production
 npm run build
+
+# Start production server
+npm run start
 ```
 
 ## 🔥 Firebase Integration Guide
