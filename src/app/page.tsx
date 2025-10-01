@@ -1,19 +1,23 @@
 'use client';
 
-import React from 'react';
-import AppLayout from '@/components/AppLayout';
-import { AppProvider } from '@/contexts/AppContext';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
-import { AuthWrapper } from '@/components/AuthWrapper';
+export default function RootPage() {
+  const [user, loading] = useAuthState(auth);
+  const router = useRouter();
 
-const Index: React.FC = () => {
-  return (
-    <AuthWrapper>
-      <AppProvider>
-        <AppLayout />
-      </AppProvider>
-    </AuthWrapper>
-  );
-};
+  useEffect(() => {
+    if (!loading) {
+      if (user) {
+        router.replace('/dashboard');
+      } else {
+        router.replace('/login');
+      }
+    }
+  }, [user, loading, router]);
 
-export default Index;
+  return <div>Loading...</div>; // Or a proper loader component
+}
