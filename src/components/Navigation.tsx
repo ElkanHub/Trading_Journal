@@ -22,7 +22,7 @@ export const Navigation: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="mr-2 md:m-0 flex items-center">
-            <Link href="/dashboard">
+            <Link href="/">
               <h1 className="text-2xl font-bold text-white">
                 Forex<span className="text-emerald-400">Journal</span>
               </h1>

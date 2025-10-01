@@ -1,10 +1,11 @@
 import React from 'react';
 
 interface HeroSectionProps {
-  onGetStarted: () => void;
+  onStartJournaling: () => void;
+  onLogin: () => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({ onStartJournaling, onLogin }) => {
   return (
     <div className="relative bg-slate-900 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 to-slate-900"></div>
@@ -25,12 +26,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onGetStarted }) => {
           <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
             Track every trade, analyze your performance, and transform your trading from guesswork into a data-driven business.
           </p>
-          <button 
-            onClick={onGetStarted}
-            className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
-          >
-            Start Journaling Now
-          </button>
+          <div className="flex justify-center space-x-4">
+            <button 
+              onClick={onStartJournaling}
+              className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
+            >
+              Start Journaling Now
+            </button>
+            <button 
+              onClick={onLogin}
+              className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
+            >
+              Login
+            </button>
+          </div>
         </div>
       </div>
     </div>
