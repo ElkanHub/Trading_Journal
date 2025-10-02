@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trade, TradeStats } from '@/types/trade';
+import { Trade, TradeStats, initialTradeStats } from '@/types/trade';
 import { CalendarView } from './CalendarView';
 
 interface AnalyticsViewProps {
@@ -9,6 +9,14 @@ interface AnalyticsViewProps {
 }
 
 export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loading }) => {
+  const [displayStats, setDisplayStats] = React.useState<TradeStats>(initialTradeStats);
+
+  React.useEffect(() => {
+    if (!loading && trades.length > 0) {
+      setDisplayStats(stats);
+    }
+  }, [loading, trades, stats]);
+
   if (loading) {
     return <p className="text-white">Loading analytics...</p>;
   }
@@ -28,55 +36,57 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
       <h2 className="text-2xl font-bold text-white">Analytics</h2>
 
       {/* Performance Summary */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Win/Loss Distribution</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Winning Trades</span>
-              <span className="text-emerald-500 font-bold">{stats.winningTrades}</span>
-            </div>
-            <div className="w-full bg-slate-700 rounded-full h-3">
-              <div 
-                className="bg-emerald-500 h-3 rounded-full transition-all"
-                style={{ width: `${stats.winRate}%` }}
-              ></div>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Losing Trades</span>
-              <span className="text-red-500 font-bold">{stats.losingTrades}</span>
-            </div>
-            <div className="w-full bg-slate-700 rounded-full h-3">
-              <div 
-                className="bg-red-500 h-3 rounded-full transition-all"
-                style={{ width: `${100 - stats.winRate}%` }}
-              ></div>
+      {displayStats && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Win/Loss Distribution</h3>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Winning Trades</span>
+                <span className="text-emerald-500 font-bold">{displayStats.winningTrades}</span>
+              </div>
+              <div className="w-full bg-slate-700 rounded-full h-3">
+                <div 
+                  className="bg-emerald-500 h-3 rounded-full transition-all"
+                  style={{ width: `${displayStats.winRate}%` }}
+                ></div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Losing Trades</span>
+                <span className="text-red-500 font-bold">{displayStats.losingTrades}</span>
+              </div>
+              <div className="w-full bg-slate-700 rounded-full h-3">
+                <div 
+                  className="bg-red-500 h-3 rounded-full transition-all"
+                  style={{ width: `${100 - displayStats.winRate}%` }}
+                ></div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Profit/Loss Breakdown</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Total Profit</span>
-              <span className="text-emerald-500 font-bold">${stats.totalProfit.toFixed(2)}</span>
-            </div>
-            <div className="flex items-center justify-between">
-              <span className="text-slate-400">Total Loss</span>
-              <span className="text-red-500 font-bold">-${stats.totalLoss.toFixed(2)}</span>
-            </div>
-            <div className="border-t border-slate-700 pt-3 mt-3">
+          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-white mb-4">Profit/Loss Breakdown</h3>
+            <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-white font-semibold">Net P/L</span>
-                <span className={`font-bold text-xl ${stats.netProfitLoss > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
-                  ${stats.netProfitLoss.toFixed(2)}
-                </span>
+                <span className="text-slate-400">Total Profit</span>
+                <span className="text-emerald-500 font-bold">${displayStats.totalProfit.toFixed(2)}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-slate-400">Total Loss</span>
+                <span className="text-red-500 font-bold">-${displayStats.totalLoss.toFixed(2)}</span>
+              </div>
+              <div className="border-t border-slate-700 pt-3 mt-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-white font-semibold">Net P/L</span>
+                  <span className={`font-bold text-xl ${displayStats.netProfitLoss > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+                    ${displayStats.netProfitLoss.toFixed(2)}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Performance by Pair */}
       <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
