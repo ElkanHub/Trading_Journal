@@ -1,4 +1,9 @@
+'use client';
+
 import React from 'react';
+import { useAuth } from '@/hooks/useAuth';
+import { useSignOut } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
 
 interface HeroSectionProps {
   onStartJournaling: () => void;
@@ -6,6 +11,9 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onStartJournaling, onLogin }) => {
+  const { user } = useAuth();
+  const [signOut] = useSignOut(auth);
+
   return (
     <div className="relative bg-slate-900 overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/20 to-slate-900"></div>
@@ -27,18 +35,37 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartJournaling, onL
             Track every trade, analyze your performance, and transform your trading from guesswork into a data-driven business.
           </p>
           <div className="flex justify-center space-x-4">
-            <button 
-              onClick={onStartJournaling}
-              className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
-            >
-              Start Journaling Now
-            </button>
-            <button 
-              onClick={onLogin}
-              className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
-            >
-              Login
-            </button>
+            {user ? (
+              <>
+                <button 
+                  onClick={onStartJournaling}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
+                >
+                  Go to Dashboard
+                </button>
+                <button 
+                  onClick={() => signOut()}
+                  className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <button 
+                  onClick={onStartJournaling}
+                  className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
+                >
+                  Start Journaling Now
+                </button>
+                <button 
+                  onClick={onLogin}
+                  className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
+                >
+                  Login
+                </button>
+              </>
+            )}
           </div>
         </div>
       </div>

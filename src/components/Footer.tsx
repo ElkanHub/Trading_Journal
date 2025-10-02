@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400 text-sm">
-          <p>© 2025 ForexPencil. Firebase integration ready. Built for traders, by traders.</p>
+          <p>© 2025 ForexPencil.Secure Journals. Built for traders, by traders.</p>
         </div>
       </div>
     </footer>

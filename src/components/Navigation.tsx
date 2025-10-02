@@ -6,8 +6,10 @@ import { usePathname } from 'next/navigation';
 import { BarChartBig, PenToolIcon, LineChartIcon } from 'lucide-react';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
+import { useAuth } from '@/hooks/useAuth';
 
 export const Navigation: React.FC = () => {
+  const { user } = useAuth();
   const [signOut] = useSignOut(auth);
   const pathname = usePathname();
 
@@ -30,7 +32,7 @@ export const Navigation: React.FC = () => {
           </div>
           
           <div className="flex items-center space-x-1">
-            {navItems.map((item) => (
+            {user && navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
@@ -44,12 +46,21 @@ export const Navigation: React.FC = () => {
                 <span className="hidden sm:inline">{item.label}</span>
               </Link>
             ))}
-            <button
-              onClick={() => signOut()}
-              className=" p-1 md:px-4 md:py-2 rounded-lg font-medium transition-colors bg-red-600 text-white hover:bg-red-500"
-            >
-              Sign Out
-            </button>
+            {user ? (
+              <button
+                onClick={() => signOut()}
+                className=" p-1 md:px-4 md:py-2 rounded-lg font-medium transition-colors bg-red-600 text-white hover:bg-red-500"
+              >
+                Sign Out
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className=" p-1 md:px-4 md:py-2 rounded-lg font-medium transition-colors bg-emerald-600 text-white hover:bg-emerald-500"
+              >
+                Login
+              </Link>
+            )}
           </div>
         </div>
       </div>
