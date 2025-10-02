@@ -86,8 +86,8 @@ export default function TradesPage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmDeleteTrade}>Delete</AlertDialogAction>
+            <AlertDialogCancel className="bg-gray-500">Cancel</AlertDialogCancel>
+            <AlertDialogAction className="bg-red-500" onClick={confirmDeleteTrade}>Delete</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

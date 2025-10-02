@@ -36,7 +36,10 @@ function CustomDayContent(props: DayContentProps, dailySummaries: Record<string,
   );
 }
 
+import { useIsMobile } from '@/hooks/use-mobile';
+
 export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
+  const isMobile = useIsMobile();
   const dailySummaries = trades.reduce((acc, trade) => {
     const date = new Date(trade.entryTime).toDateString();
     if (!acc[date]) {
@@ -91,7 +94,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
           classNames={{
             caption: 'text-white',
             head: 'text-slate-400',
-            day: 'w-16 h-16 border border-slate-700 text-white',
+            day: isMobile ? 'w-12 h-12 border border-slate-700 text-white' : 'w-16 h-16 border border-slate-700 text-white',
             nav_button: 'text-white',
           }}
         />
