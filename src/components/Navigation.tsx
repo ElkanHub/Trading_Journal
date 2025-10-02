@@ -24,7 +24,7 @@ export const Navigation: React.FC = () => {
           <div className="mr-2 md:m-0 flex items-center">
             <Link href="/">
               <h1 className="text-2xl font-bold text-white">
-                Forex<span className="text-emerald-400">Journal</span>
+                Forex<span className="text-emerald-400">Pencil</span>
               </h1>
             </Link>
           </div>

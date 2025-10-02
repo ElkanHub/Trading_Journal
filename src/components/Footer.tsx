@@ -7,7 +7,7 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-xl font-bold text-white mb-4">
-              Forex<span className="text-emerald-400">Journal</span>
+              Forex<span className="text-emerald-400">Pencil</span>
             </h3>
             <p className="text-slate-400 text-sm">
               Professional trading journal for serious Forex traders. Track, analyze, and improve your trading performance.
@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400 text-sm">
-          <p>© 2025 ForexJournal. Firebase integration ready. Built for traders, by traders.</p>
+          <p>© 2025 ForexPencil. Firebase integration ready. Built for traders, by traders.</p>
         </div>
       </div>
     </footer>
