@@ -1,9 +1,12 @@
 "use client";
 
+"use client";
+
 import React, { useState } from "react";
 import {
   useSignInWithGoogle,
   useSignInWithEmailAndPassword,
+  useSendPasswordResetEmail,
 } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
 import Link from "next/link";
@@ -13,8 +16,11 @@ export default function LoginPage() {
   const [signInWithGoogle, , , googleError] = useSignInWithGoogle(auth);
   const [signInWithEmailAndPassword, , , emailError] =
     useSignInWithEmailAndPassword(auth);
+  const [sendPasswordResetEmail, sending, resetError] =
+    useSendPasswordResetEmail(auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [resetEmailSent, setResetEmailSent] = useState(false);
   const router = useRouter();
 
   const handleEmailSignIn = async (e: React.FormEvent) => {
@@ -29,6 +35,15 @@ export default function LoginPage() {
     const success = await signInWithGoogle();
     if (success) {
       router.push("/");
+    }
+  };
+
+  const handlePasswordReset = async () => {
+    if (email) {
+      await sendPasswordResetEmail(email);
+      setResetEmailSent(true);
+    } else {
+      alert("Please enter your email address to reset your password.");
     }
   };
 
@@ -96,9 +111,18 @@ export default function LoginPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1">
-              Password
-            </label>
+            <div className="flex justify-between">
+              <label className="block text-sm font-medium text-slate-300 mb-1">
+                Password
+              </label>
+              <button
+                type="button"
+                onClick={handlePasswordReset}
+                className="text-sm text-emerald-400 hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
             <input
               type="password"
               value={password}
@@ -115,9 +139,15 @@ export default function LoginPage() {
           </button>
         </form>
 
-        {(googleError || emailError) && (
+        {resetEmailSent && (
+          <p className="text-emerald-400 text-center mt-4">
+            Password reset email sent. Please check your inbox.
+          </p>
+        )}
+
+        {(googleError || emailError || resetError) && (
           <p className="text-red-500 text-center mt-4">
-            {googleError?.message || emailError?.message}
+            {googleError?.message || emailError?.message || resetError?.message}
           </p>
         )}
 
@@ -131,3 +161,4 @@ export default function LoginPage() {
     </div>
   );
 }
+
