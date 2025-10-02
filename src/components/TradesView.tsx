@@ -21,7 +21,7 @@ export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDe
     dateTo: ''
   });
 
-  const filteredTrades = trades.filter(trade => {
+  const sortedTrades = filteredTrades.sort((a, b) => new Date(b.entryTime).getTime() - new Date(a.entryTime).getTime());
     if (filters.pair && trade.pair !== filters.pair) return false;
     if (filters.strategy && trade.strategy !== filters.strategy) return false;
     if (filters.outcome && trade.outcome !== filters.outcome) return false;
@@ -63,7 +63,7 @@ export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDe
                 <p className="text-slate-400">No trades match your filters. Try adjusting your criteria.</p>
               </div>
             ) : (
-              <TradeTable trades={filteredTrades} onDelete={onDeleteTrade} onEdit={onEditTrade} />
+              <TradeTable trades={sortedTrades} onDelete={onDeleteTrade} onEdit={onEditTrade} />
             )}
           </div>
 

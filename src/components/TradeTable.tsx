@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Trade } from '@/types/trade';
-import { MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal, ArrowUpDown } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,25 +14,95 @@ interface TradeTableProps {
   onDelete?: (id: string) => void;
 }
 
+type SortConfig = {
+  key: keyof Trade;
+  direction: 'ascending' | 'descending';
+} | null;
+
 export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete }) => {
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'entryTime', direction: 'descending' });
+
+  const sortedTrades = useMemo(() => {
+    let sortableTrades = [...trades];
+    if (sortConfig !== null) {
+      sortableTrades.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? -1 : 1;
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === 'ascending' ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableTrades;
+  }, [trades, sortConfig]);
+
+  const requestSort = (key: keyof Trade) => {
+    let direction: 'ascending' | 'descending' = 'ascending';
+    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const getSortIndicator = (key: keyof Trade) => {
+    if (!sortConfig || sortConfig.key !== key) {
+      return <ArrowUpDown size={14} className="ml-2 opacity-50" />;
+    }
+    return sortConfig.direction === 'ascending' ? ' 🔼' : ' 🔽';
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
           <tr className="border-b border-slate-700">
-            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">Date</th>
-            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">Pair</th>
-            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">Direction</th>
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">Entry</th>
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">Exit</th>
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">Pips</th>
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">P/L</th>
-            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">Strategy</th>
+            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
+              <button onClick={() => requestSort('entryTime')} className="flex items-center">
+                Date {getSortIndicator('entryTime')}
+              </button>
+            </th>
+            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
+              <button onClick={() => requestSort('pair')} className="flex items-center">
+                Pair {getSortIndicator('pair')}
+              </button>
+            </th>
+            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
+              <button onClick={() => requestSort('direction')} className="flex items-center">
+                Direction {getSortIndicator('direction')}
+              </button>
+            </th>
+            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
+              <button onClick={() => requestSort('entryPrice')} className="flex items-center">
+                Entry {getSortIndicator('entryPrice')}
+              </button>
+            </th>
+            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
+              <button onClick={() => requestSort('exitPrice')} className="flex items-center">
+                Exit {getSortIndicator('exitPrice')}
+              </button>
+            </th>
+            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
+              <button onClick={() => requestSort('profitLossPips')} className="flex items-center">
+                Pips {getSortIndicator('profitLossPips')}
+              </button>
+            </th>
+            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
+              <button onClick={() => requestSort('profitLoss')} className="flex items-center">
+                P/L {getSortIndicator('profitLoss')}
+              </button>
+            </th>
+            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
+              <button onClick={() => requestSort('strategy')} className="flex items-center">
+                Strategy {getSortIndicator('strategy')}
+              </button>
+            </th>
             <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">Actions</th>
           </tr>
         </thead>
         <tbody>
-          {trades.map((trade) => (
+          {sortedTrades.map((trade) => (
             <tr 
               key={trade.id} 
               className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors"
