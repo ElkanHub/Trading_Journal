@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trade } from '@/types/trade';
 
 interface AddTradeFormProps {
   onSubmit: (trade: Omit<Trade, 'id'>) => void;
   onCancel: () => void;
+  initialValues?: Trade;
 }
 
-export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel }) => {
+export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, initialValues }) => {
   const [formData, setFormData] = useState({
     pair: 'EUR/USD',
     direction: 'long' as 'long' | 'short',
@@ -23,6 +24,20 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel }
     notes: '',
     tags: ''
   });
+
+  useEffect(() => {
+    if (initialValues) {
+      setFormData({
+        ...initialValues,
+        tags: initialValues.tags.join(', '),
+        entryPrice: initialValues.entryPrice.toString(),
+        exitPrice: initialValues.exitPrice.toString(),
+        lotSize: initialValues.lotSize.toString(),
+        stopLoss: initialValues.stopLoss.toString(),
+        takeProfit: initialValues.takeProfit.toString(),
+      });
+    }
+  }, [initialValues]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -63,22 +78,6 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel }
     };
     
     onSubmit(trade);
-    setFormData({
-      pair: 'EUR/USD',
-      direction: 'long',
-      entryPrice: '',
-      exitPrice: '',
-      lotSize: '',
-      stopLoss: '',
-      takeProfit: '',
-      entryTime: '',
-      exitTime: '',
-      strategy: '',
-      emotionalState: '',
-      confidence: 5,
-      notes: '',
-      tags: ''
-    });
   };
 
   return (
@@ -264,7 +263,7 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel }
           type="submit"
           className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded font-semibold transition-colors"
         >
-          Add Trade
+          {initialValues ? 'Update Trade' : 'Add Trade'}
         </button>
         <button 
           type="button"

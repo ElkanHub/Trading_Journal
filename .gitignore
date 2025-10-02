@@ -32,3 +32,14 @@ dist-ssr
 .env.production.local
 .env.development
 .env.development.local
+
+# Next.js build output
+.next/
+out/
+.turbo/
+.vercel/
+
+# Dependency folders
+node_modules/
+
+

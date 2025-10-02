@@ -29,11 +29,17 @@ export const useTrades = () => {
     setTrades([newTrade, ...trades]);
   };
 
+  const updateTrade = async (trade: Trade) => {
+    if (!user) return;
+    const updatedTrade = await journalService.updateTrade(user.uid, trade);
+    setTrades(trades.map(t => t.id === trade.id ? updatedTrade : t));
+  };
+
   const deleteTrade = async (id: string) => {
     if (!user) return;
     await journalService.deleteTrade(user.uid, id);
     setTrades(trades.filter(t => t.id !== id));
   };
 
-  return { trades, loading, addTrade, deleteTrade };
+  return { trades, loading, addTrade, updateTrade, deleteTrade };
 };

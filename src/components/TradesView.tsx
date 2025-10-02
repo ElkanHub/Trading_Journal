@@ -8,10 +8,11 @@ interface TradesViewProps {
   trades: Trade[];
   onAddTrade: () => void;
   onDeleteTrade: (id: string) => void;
+  onEditTrade: (trade: Trade) => void; // Add this line
   loading: boolean;
 }
 
-export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDeleteTrade, loading }) => {
+export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDeleteTrade, onEditTrade, loading }) => {
   const [filters, setFilters] = useState({
     pair: '',
     strategy: '',
@@ -62,7 +63,7 @@ export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDe
                 <p className="text-slate-400">No trades match your filters. Try adjusting your criteria.</p>
               </div>
             ) : (
-              <TradeTable trades={filteredTrades} />
+              <TradeTable trades={filteredTrades} onDelete={onDeleteTrade} onEdit={onEditTrade} />
             )}
           </div>
 
