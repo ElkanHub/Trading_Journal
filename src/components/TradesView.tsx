@@ -8,20 +8,27 @@ interface TradesViewProps {
   trades: Trade[];
   onAddTrade: () => void;
   onDeleteTrade: (id: string) => void;
-  onEditTrade: (trade: Trade) => void; // Add this line
+  onEditTrade: (trade: Trade) => void;
   loading: boolean;
 }
 
-export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDeleteTrade, onEditTrade, loading }) => {
+export const TradesView: React.FC<TradesViewProps> = ({
+  trades,
+  onAddTrade,
+  onDeleteTrade,
+  onEditTrade,
+  loading,
+}) => {
   const [filters, setFilters] = useState({
     pair: '',
     strategy: '',
     outcome: '',
     dateFrom: '',
-    dateTo: ''
+    dateTo: '',
   });
 
-  const sortedTrades = filteredTrades.sort((a, b) => new Date(b.entryTime).getTime() - new Date(a.entryTime).getTime());
+  // ✅ Filter trades first
+  const filteredTrades = trades.filter((trade) => {
     if (filters.pair && trade.pair !== filters.pair) return false;
     if (filters.strategy && trade.strategy !== filters.strategy) return false;
     if (filters.outcome && trade.outcome !== filters.outcome) return false;
@@ -29,6 +36,11 @@ export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDe
     if (filters.dateTo && new Date(trade.entryTime) > new Date(filters.dateTo)) return false;
     return true;
   });
+
+  // ✅ Then sort the filtered trades
+  const sortedTrades = filteredTrades.sort(
+    (a, b) => new Date(b.entryTime).getTime() - new Date(a.entryTime).getTime()
+  );
 
   if (loading) {
     return <p className="text-white">Loading trades...</p>;
@@ -38,7 +50,7 @@ export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDe
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-white">All Trades</h2>
-        <button 
+        <button
           onClick={onAddTrade}
           className="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded font-semibold transition-colors"
         >
@@ -47,7 +59,7 @@ export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDe
       </div>
 
       {trades.length === 0 ? (
-        <EmptyState 
+        <EmptyState
           title="No Trades Yet"
           description="Start logging your trades to build your trading history and analyze your performance."
           actionLabel="Add Your First Trade"
@@ -60,10 +72,16 @@ export const TradesView: React.FC<TradesViewProps> = ({ trades, onAddTrade, onDe
           <div className="bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
             {filteredTrades.length === 0 ? (
               <div className="p-8 text-center">
-                <p className="text-slate-400">No trades match your filters. Try adjusting your criteria.</p>
+                <p className="text-slate-400">
+                  No trades match your filters. Try adjusting your criteria.
+                </p>
               </div>
             ) : (
-              <TradeTable trades={sortedTrades} onDelete={onDeleteTrade} onEdit={onEditTrade} />
+              <TradeTable
+                trades={sortedTrades}
+                onDelete={onDeleteTrade}
+                onEdit={onEditTrade}
+              />
             )}
           </div>
 
