@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { DayPicker } from 'react-day-picker';
+import { DayPicker, DayContent } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { Trade } from '@/types/trade';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -47,27 +47,28 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
     win: {
       backgroundColor: 'rgba(16, 185, 129, 0.2)',
       borderColor: 'rgba(16, 185, 129, 1)',
+      color: 'white',
     },
     loss: {
       backgroundColor: 'rgba(239, 68, 68, 0.2)',
       borderColor: 'rgba(239, 68, 68, 1)',
+      color: 'white',
     },
   };
 
-  const renderDayContent = (day: Date) => {
-    const summary = dailySummaries[day.toDateString()];
-    if (summary) {
-      return (
-        <div className="text-xs p-1">
-          <div className="font-bold">{day.getDate()}</div>
-          <div className="flex justify-between">
+  const CustomDayContent: React.FC<DayContentProps> = (props) => {
+    const summary = dailySummaries[props.date.toDateString()];
+    return (
+      <div className="relative w-full h-full flex items-center justify-center">
+        <span>{props.date.getDate()}</span>
+        {summary && (
+          <div className="absolute bottom-1 left-1 text-xs">
             <span className="text-emerald-500">{summary.wins}W</span>
             <span className="text-red-500">{summary.losses}L</span>
           </div>
-        </div>
-      );
-    }
-    return <div className="font-bold">{day.getDate()}</div>;
+        )}
+      </div>
+    );
   };
 
   return (
@@ -80,13 +81,13 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
           modifiers={modifiers}
           modifiersStyles={modifiersStyles}
           components={{
-            DayContent: ({ date }) => renderDayContent(date as Date),
+            DayContent: CustomDayContent,
           }}
           className="bg-slate-800 text-white"
           classNames={{
             caption: 'text-white',
             head: 'text-slate-400',
-            day: 'text-white',
+            day: 'w-16 h-16 border border-slate-700 text-white',
             nav_button: 'text-white',
           }}
         />
