@@ -23,7 +23,7 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'entryTime', direction: 'descending' });
 
   const sortedTrades = useMemo(() => {
-    let sortableTrades = [...trades];
+    const sortableTrades = [...trades];
     if (sortConfig !== null) {
       sortableTrades.sort((a, b) => {
         if (a[sortConfig.key] < b[sortConfig.key]) {
