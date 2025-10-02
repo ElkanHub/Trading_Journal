@@ -1,8 +1,7 @@
-
 'use client';
 
 import React from 'react';
-import { DayPicker, DayContent } from 'react-day-picker';
+import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { Trade } from '@/types/trade';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,9 +16,29 @@ type DailySummary = {
   totalPL: number;
 };
 
+interface DayContentProps {
+  date: Date;
+  displayMonth: Date;
+}
+
+function CustomDayContent(props: DayContentProps, dailySummaries: Record<string, DailySummary>): React.ReactElement {
+  const summary = dailySummaries[props.date.toDateString()];
+  return (
+    <div className="relative w-full h-full flex items-center justify-center">
+      <span>{props.date.getDate()}</span>
+      {summary && (
+        <div className="absolute bottom-1 left-1 text-xs">
+          <span className="text-emerald-500">{summary.wins}W</span>
+          <span className="text-red-500">{summary.losses}L</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
   const dailySummaries = trades.reduce((acc, trade) => {
-    const date = new Date(trade.date).toDateString();
+    const date = new Date(trade.entryTime).toDateString();
     if (!acc[date]) {
       acc[date] = { wins: 0, losses: 0, totalPL: 0 };
     }
@@ -56,21 +75,6 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
     },
   };
 
-  const CustomDayContent: React.FC<DayContentProps> = (props) => {
-    const summary = dailySummaries[props.date.toDateString()];
-    return (
-      <div className="relative w-full h-full flex items-center justify-center">
-        <span>{props.date.getDate()}</span>
-        {summary && (
-          <div className="absolute bottom-1 left-1 text-xs">
-            <span className="text-emerald-500">{summary.wins}W</span>
-            <span className="text-red-500">{summary.losses}L</span>
-          </div>
-        )}
-      </div>
-    );
-  };
-
   return (
     <Card className="bg-slate-800 border-slate-700 text-white">
       <CardHeader>
@@ -81,7 +85,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
           modifiers={modifiers}
           modifiersStyles={modifiersStyles}
           components={{
-            DayContent: CustomDayContent,
+            DayContent: (props) => CustomDayContent(props, dailySummaries),
           }}
           className="bg-slate-800 text-white"
           classNames={{
