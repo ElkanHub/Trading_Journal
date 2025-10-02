@@ -20,6 +20,21 @@ export interface Trade {
   outcome: 'win' | 'loss' | 'breakeven';
 }
 
+export interface TradeStats {
+  totalTrades: number;
+  winningTrades: number;
+  losingTrades: number;
+  winRate: number;
+  totalProfit: number;
+  totalLoss: number;
+  netProfitLoss: number;
+  avgRiskReward: number;
+  bestTrade: number;
+  worstTrade: number;
+  avgWin: number;
+  avgLoss: number;
+}
+
 export const initialTradeStats: TradeStats = {
   totalTrades: 0,
   winningTrades: 0,
