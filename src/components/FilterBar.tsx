@@ -1,14 +1,16 @@
 import React from 'react';
 
+interface Filters {
+  pair: string;
+  strategy: string;
+  outcome: string;
+  dateFrom: string;
+  dateTo: string;
+}
+
 interface FilterBarProps {
-  filters: {
-    pair: string;
-    strategy: string;
-    outcome: string;
-    dateFrom: string;
-    dateTo: string;
-  };
-  onFilterChange: (filters: any) => void;
+  filters: Filters;
+  onFilterChange: (filters: Filters) => void;
 }
 
 export const FilterBar: React.FC<FilterBarProps> = ({ filters, onFilterChange }) => {
@@ -17,9 +19,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onFilterChange })
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         <div>
           <label className="block text-sm font-medium text-slate-400 mb-1">Currency Pair</label>
-          <select 
+          <select
             value={filters.pair}
-            onChange={(e) => onFilterChange({...filters, pair: e.target.value})}
+            onChange={(e) => onFilterChange({ ...filters, pair: e.target.value })}
             className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white text-sm"
           >
             <option value="">All Pairs</option>
@@ -32,9 +34,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onFilterChange })
 
         <div>
           <label className="block text-sm font-medium text-slate-400 mb-1">Strategy</label>
-          <select 
+          <select
             value={filters.strategy}
-            onChange={(e) => onFilterChange({...filters, strategy: e.target.value})}
+            onChange={(e) => onFilterChange({ ...filters, strategy: e.target.value })}
             className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white text-sm"
           >
             <option value="">All Strategies</option>
@@ -46,9 +48,9 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onFilterChange })
 
         <div>
           <label className="block text-sm font-medium text-slate-400 mb-1">Outcome</label>
-          <select 
+          <select
             value={filters.outcome}
-            onChange={(e) => onFilterChange({...filters, outcome: e.target.value})}
+            onChange={(e) => onFilterChange({ ...filters, outcome: e.target.value })}
             className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white text-sm"
           >
             <option value="">All</option>
@@ -59,20 +61,20 @@ export const FilterBar: React.FC<FilterBarProps> = ({ filters, onFilterChange })
 
         <div>
           <label className="block text-sm font-medium text-slate-400 mb-1">From</label>
-          <input 
+          <input
             type="date"
             value={filters.dateFrom}
-            onChange={(e) => onFilterChange({...filters, dateFrom: e.target.value})}
+            onChange={(e) => onFilterChange({ ...filters, dateFrom: e.target.value })}
             className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white text-sm"
           />
         </div>
 
         <div>
           <label className="block text-sm font-medium text-slate-400 mb-1">To</label>
-          <input 
+          <input
             type="date"
             value={filters.dateTo}
-            onChange={(e) => onFilterChange({...filters, dateTo: e.target.value})}
+            onChange={(e) => onFilterChange({ ...filters, dateTo: e.target.value })}
             className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white text-sm"
           />
         </div>
