@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trade, TradeStats } from '@/types/trade';
+import { CalendarView } from './CalendarView';
 
 interface AnalyticsViewProps {
   trades: Trade[];
@@ -100,6 +101,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
           ))}
         </div>
       </div>
+      <CalendarView trades={trades} />
     </div>
   );
 };

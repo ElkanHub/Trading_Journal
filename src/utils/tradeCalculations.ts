@@ -1,24 +1,28 @@
 import { Trade, TradeStats } from '@/types/trade';
 
-export const calculateStats = (trades: Trade[]): TradeStats => {
-  const winningTrades = trades.filter(t => t.outcome === 'win');
-  const losingTrades = trades.filter(t => t.outcome === 'loss');
-  
-  const totalProfit = winningTrades.reduce((sum, t) => sum + t.profitLoss, 0);
-  const totalLoss = Math.abs(losingTrades.reduce((sum, t) => sum + t.profitLoss, 0));
-  
+export function calculateStats(trades: Trade[]): TradeStats {
+  const winningTrades = trades.filter((trade) => trade.outcome === 'win').length;
+  const losingTrades = trades.filter((trade) => trade.outcome === 'loss').length;
+  const totalTrades = trades.length;
+  const winRate = totalTrades > 0 ? (winningTrades / totalTrades) * 100 : 0;
+
+  const totalProfit = trades
+    .filter((trade) => trade.outcome === 'win')
+    .reduce((acc, trade) => acc + trade.profitLoss, 0);
+
+  const totalLoss = trades
+    .filter((trade) => trade.outcome === 'loss')
+    .reduce((acc, trade) => acc + trade.profitLoss, 0);
+
+  const netProfitLoss = totalProfit - totalLoss;
+
   return {
-    totalTrades: trades.length,
-    winningTrades: winningTrades.length,
-    losingTrades: losingTrades.length,
-    winRate: trades.length > 0 ? (winningTrades.length / trades.length) * 100 : 0,
+    winningTrades,
+    losingTrades,
+    totalTrades,
+    winRate,
     totalProfit,
     totalLoss,
-    netProfitLoss: totalProfit - totalLoss,
-    avgRiskReward: trades.length > 0 ? trades.reduce((sum, t) => sum + t.riskRewardRatio, 0) / trades.length : 0,
-    bestTrade: trades.length > 0 ? Math.max(...trades.map(t => t.profitLoss)) : 0,
-    worstTrade: trades.length > 0 ? Math.min(...trades.map(t => t.profitLoss)) : 0,
-    avgWin: winningTrades.length > 0 ? totalProfit / winningTrades.length : 0,
-    avgLoss: losingTrades.length > 0 ? totalLoss / losingTrades.length : 0,
+    netProfitLoss,
   };
-};
+}
