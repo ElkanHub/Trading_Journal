@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Trade } from '@/types/trade';
-import { MoreHorizontal, ArrowUpDown } from 'lucide-react';
+import { MoreHorizontal, ArrowUpDown, ArrowDown01, ArrowDown10} from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -50,7 +50,7 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
     if (!sortConfig || sortConfig.key !== key) {
       return <ArrowUpDown size={14} className="ml-2 opacity-50" />;
     }
-    return sortConfig.direction === 'ascending' ? ' 🔼' : ' 🔽';
+    return sortConfig.direction === 'ascending' ? <ArrowDown01 /> : <ArrowDown10 />;
   };
 
   return (
