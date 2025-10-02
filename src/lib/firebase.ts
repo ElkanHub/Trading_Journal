@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
@@ -11,11 +11,18 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
 };
 
-const app = initializeApp(firebaseConfig);
+// Avoid re-initializing
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 
+// Safe exports
 export const firestoreDb = getFirestore(app);
-export const realtimeDb = getDatabase(app);
+
+// Prevent SSR crash by initializing Realtime DB only in browser
+export const realtimeDb =
+  typeof window !== "undefined" ? getDatabase(app) : null;
+
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
