@@ -27,7 +27,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
     }
     if (trade.outcome === 'win') acc[trade.pair].wins++;
     if (trade.outcome === 'loss') acc[trade.pair].losses++;
-    acc[trade.pair].totalPL += trade.profitLoss;
+    acc[trade.pair].totalPL += trade.netProfit;
     return acc;
   }, {} as Record<string, { wins: number; losses: number; totalPL: number }>);
 

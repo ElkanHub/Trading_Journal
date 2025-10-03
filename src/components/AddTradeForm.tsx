@@ -12,10 +12,8 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
     pair: 'EUR/USD',
     direction: 'long' as 'long' | 'short',
     entryPrice: '',
-    exitPrice: '',
-    lotSize: '',
-    stopLoss: '',
-    takeProfit: '',
+    profit: '',
+    loss: '',
     entryTime: '',
     exitTime: '',
     strategy: '',
@@ -31,10 +29,8 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
         ...initialValues,
         tags: initialValues.tags.join(', '),
         entryPrice: initialValues.entryPrice.toString(),
-        exitPrice: initialValues.exitPrice.toString(),
-        lotSize: initialValues.lotSize.toString(),
-        stopLoss: initialValues.stopLoss.toString(),
-        takeProfit: initialValues.takeProfit.toString(),
+        profit: initialValues.profit?.toString() || '',
+        loss: initialValues.loss?.toString() || '',
       });
     }
   }, [initialValues]);
@@ -43,38 +39,26 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
     e.preventDefault();
     
     const entry = parseFloat(formData.entryPrice);
-    const exit = parseFloat(formData.exitPrice);
-    const sl = parseFloat(formData.stopLoss);
-    const tp = parseFloat(formData.takeProfit);
-    const lotSize = parseFloat(formData.lotSize);
+    const profit = parseFloat(formData.profit);
+    const loss = parseFloat(formData.loss);
 
-    const pips = formData.pair.includes('JPY') 
-      ? (formData.direction === 'long' ? (exit - entry) * 100 : (entry - exit) * 100)
-      : (formData.direction === 'long' ? (exit - entry) * 10000 : (entry - exit) * 10000);
-
-    const pl = pips * lotSize;
-
-    const riskRewardRatio = Math.abs((tp - entry) / (entry - sl));
+    const netProfit = profit ? profit : loss ? -loss : 0;
     
     const trade: Omit<Trade, 'id'> = {
       pair: formData.pair,
       direction: formData.direction,
       entryPrice: entry,
-      exitPrice: exit,
-      lotSize: lotSize,
-      stopLoss: sl,
-      takeProfit: tp,
       entryTime: formData.entryTime,
       exitTime: formData.exitTime,
-      profitLoss: pl,
-      profitLossPips: pips,
       strategy: formData.strategy,
       emotionalState: formData.emotionalState,
       confidence: formData.confidence,
       notes: formData.notes,
       tags: formData.tags.split(',').map(t => t.trim()),
-      riskRewardRatio: riskRewardRatio,
-      outcome: pl > 0 ? 'win' : pl < 0 ? 'loss' : 'breakeven'
+      outcome: netProfit > 0 ? 'win' : netProfit < 0 ? 'loss' : 'breakeven',
+      profit: profit || undefined,
+      loss: loss || undefined,
+      netProfit: netProfit,
     };
     
     onSubmit(trade);
@@ -126,52 +110,28 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Exit Price</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Profit</label>
           <input 
             type="number" 
-            step="0.00001"
-            value={formData.exitPrice}
-            onChange={(e) => setFormData({...formData, exitPrice: e.target.value})}
+            step="0.01"
+            value={formData.profit}
+            onChange={(e) => setFormData({...formData, profit: e.target.value, loss: ''})}
             className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white"
-            required
+            disabled={!!formData.loss}
           />
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Lot Size</label>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Loss</label>
           <input 
             type="number" 
             step="0.01"
-            value={formData.lotSize}
-            onChange={(e) => setFormData({...formData, lotSize: e.target.value})}
+            value={formData.loss}
+            onChange={(e) => setFormData({...formData, loss: e.target.value, profit: ''})}
             className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white"
-            required
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Stop Loss</label>
-          <input 
-            type="number" 
-            step="0.00001"
-            value={formData.stopLoss}
-            onChange={(e) => setFormData({...formData, stopLoss: e.target.value})}
-            className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white"
-            required
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Take Profit</label>
-          <input 
-            type="number" 
-            step="0.00001"
-            value={formData.takeProfit}
-            onChange={(e) => setFormData({...formData, takeProfit: e.target.value})}
-            className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white"
-            required
+            disabled={!!formData.profit}
           />
         </div>
       </div>

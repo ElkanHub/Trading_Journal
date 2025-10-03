@@ -3,21 +3,17 @@ export interface Trade {
   pair: string;
   direction: 'long' | 'short';
   entryPrice: number;
-  exitPrice: number;
-  lotSize: number;
-  stopLoss: number;
-  takeProfit: number;
   entryTime: string;
   exitTime: string;
-  profitLoss: number;
-  profitLossPips: number;
   strategy: string;
   emotionalState: string;
   confidence: number;
   notes: string;
   tags: string[];
-  riskRewardRatio: number;
   outcome: 'win' | 'loss' | 'breakeven';
+  profit?: number;
+  loss?: number;
+  netProfit: number;
 }
 
 export interface TradeStats {

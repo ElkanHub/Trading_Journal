@@ -41,14 +41,8 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         <StatCard
           title="Net P/L"
           value={`$${(stats.netProfitLoss ?? 0).toFixed(2)}`}
-          subtitle={`Best: $${(stats.bestTrade ?? 0).toFixed(2)}`}
+          subtitle="All time"
           trend={stats.netProfitLoss > 0 ? "up" : "down"}
-        />
-        <StatCard
-          title="Avg R:R"
-          value={(stats.avgRiskReward ?? 0).toFixed(2)}
-          subtitle="Risk/Reward Ratio"
-          trend="neutral"
         />
       </div>
 

@@ -79,18 +79,8 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
               </button>
             </th>
             <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
-              <button onClick={() => requestSort('exitPrice')} className="flex items-center">
-                Exit {getSortIndicator('exitPrice')}
-              </button>
-            </th>
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
-              <button onClick={() => requestSort('profitLossPips')} className="flex items-center">
-                Pips {getSortIndicator('profitLossPips')}
-              </button>
-            </th>
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
-              <button onClick={() => requestSort('profitLoss')} className="flex items-center">
-                P/L {getSortIndicator('profitLoss')}
+              <button onClick={() => requestSort('netProfit')} className="flex items-center">
+                Net P/L {getSortIndicator('netProfit')}
               </button>
             </th>
             <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
@@ -121,16 +111,10 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
                 </span>
               </td>
               <td className="py-3 px-4 text-right text-slate-300">{trade.entryPrice.toFixed(5)}</td>
-              <td className="py-3 px-4 text-right text-slate-300">{trade.exitPrice.toFixed(5)}</td>
-              <td className={`py-3 px-4 text-right font-medium ${
-                trade.profitLossPips > 0 ? 'text-emerald-500' : 'text-red-500'
-              }`}>
-                {trade.profitLossPips > 0 ? '+' : ''}{trade.profitLossPips.toFixed(1)}
-              </td>
               <td className={`py-3 px-4 text-right font-bold text-sm ${
-                trade.profitLoss > 0 ? 'text-emerald-500' : 'text-red-500'
+                trade.netProfit > 0 ? 'text-emerald-500' : 'text-red-500'
               }`}>
-                {trade.profitLoss > 0 ? '+' : ''}${trade.profitLoss.toFixed(2)}
+                {trade.netProfit > 0 ? '+' : ''}${trade.netProfit.toFixed(2)}
               </td>
               <td className="py-3 px-4 text-slate-400 text-sm">{trade.strategy}</td>
               <td className="py-3 px-4 text-right">
