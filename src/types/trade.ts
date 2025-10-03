@@ -1,7 +1,7 @@
 export interface Trade {
   id: string;
   pair: string;
-  direction: 'long' | 'short';
+  direction: "long" | "short";
   entryPrice: number;
   entryTime: string;
   exitTime: string;
@@ -10,7 +10,7 @@ export interface Trade {
   confidence: number;
   notes: string;
   tags: string[];
-  outcome: 'win' | 'loss' | 'breakeven';
+  outcome: "win" | "loss" | "breakeven";
   profit?: number;
   loss?: number;
   netProfit: number;

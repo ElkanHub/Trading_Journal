@@ -50,7 +50,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
     } else {
       acc[date].losses++;
     }
-    acc[date].totalPL += trade.profitLoss;
+    acc[date].totalPL += trade.netProfit;
     return acc;
   }, {} as Record<string, DailySummary>);
 
