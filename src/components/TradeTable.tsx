@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Trade } from '@/types/trade';
-import { MoreHorizontal, ArrowUpDown, ArrowDown01, ArrowDown10} from 'lucide-react';
+import { MoreHorizontal, ArrowUpDown, ArrowDown01, ArrowDown10 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,16 +20,25 @@ type SortConfig = {
 } | null;
 
 export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete }) => {
-  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: 'entryTime', direction: 'descending' });
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
+    key: 'entryTime',
+    direction: 'descending',
+  });
 
   const sortedTrades = useMemo(() => {
     const sortableTrades = [...trades];
     if (sortConfig !== null) {
       sortableTrades.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
+        const aValue = a[sortConfig.key];
+        const bValue = b[sortConfig.key];
+
+        // ✅ Handle undefined/null values safely
+        if (aValue == null || bValue == null) return 0;
+
+        if (aValue < bValue) {
           return sortConfig.direction === 'ascending' ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
+        if (aValue > bValue) {
           return sortConfig.direction === 'ascending' ? 1 : -1;
         }
         return 0;
@@ -93,8 +102,8 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
         </thead>
         <tbody>
           {sortedTrades.map((trade) => (
-            <tr 
-              key={trade.id} 
+            <tr
+              key={trade.id}
               className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors"
             >
               <td className="py-3 px-4 text-slate-300 text-sm">
@@ -102,18 +111,24 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
               </td>
               <td className="py-3 px-4 text-white font-medium">{trade.pair}</td>
               <td className="py-3 px-4">
-                <span className={`text-xs px-2 py-1 rounded ${
-                  trade.direction === 'long' 
-                    ? 'bg-emerald-900/30 text-emerald-400' 
-                    : 'bg-red-900/30 text-red-400'
-                }`}>
+                <span
+                  className={`text-xs px-2 py-1 rounded ${
+                    trade.direction === 'long'
+                      ? 'bg-emerald-900/30 text-emerald-400'
+                      : 'bg-red-900/30 text-red-400'
+                  }`}
+                >
                   {trade.direction.toUpperCase()}
                 </span>
               </td>
-              <td className="py-3 px-4 text-right text-slate-300">{trade.entryPrice.toFixed(5)}</td>
-              <td className={`py-3 px-4 text-right font-bold text-sm ${
-                trade.netProfit > 0 ? 'text-emerald-500' : 'text-red-500'
-              }`}>
+              <td className="py-3 px-4 text-right text-slate-300">
+                {trade.entryPrice.toFixed(5)}
+              </td>
+              <td
+                className={`py-3 px-4 text-right font-bold text-sm ${
+                  trade.netProfit > 0 ? 'text-emerald-500' : 'text-red-500'
+                }`}
+              >
                 {trade.netProfit > 0 ? '+' : ''}${trade.netProfit.toFixed(2)}
               </td>
               <td className="py-3 px-4 text-slate-400 text-sm">{trade.strategy}</td>
@@ -128,7 +143,7 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
                     <DropdownMenuItem onClick={() => onEdit && onEdit(trade)}>
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem 
+                    <DropdownMenuItem
                       onClick={() => onDelete && onDelete(trade.id)}
                       className="text-red-500"
                     >
