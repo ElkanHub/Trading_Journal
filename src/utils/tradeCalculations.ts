@@ -9,16 +9,20 @@ export function calculateStats(trades: Trade[]): TradeStats {
     totalTrades > 0 ? (winningTrades.length / totalTrades) * 100 : 0;
 
   const totalProfit = winningTrades.reduce(
-    (acc, trade) => acc + trade.netProfit,
+    (acc, trade) => acc + (trade.profit || 0),
     0
   );
-  // note: losses are stored negative in netProfit, so take absolute
   const totalLoss = losingTrades.reduce(
-    (acc, trade) => acc + Math.abs(trade.netProfit),
+    (acc, trade) => acc + (trade.loss || 0),
     0
   );
 
   const netProfitLoss = totalProfit - totalLoss;
+
+  const bestTrade =
+    winningTrades.length > 0 ? Math.max(...winningTrades.map((t) => t.profit || 0)) : 0;
+  const worstTrade =
+    losingTrades.length > 0 ? Math.max(...losingTrades.map((t) => t.loss || 0)) : 0;
 
   const avgWin =
     winningTrades.length > 0 ? totalProfit / winningTrades.length : 0;
@@ -32,9 +36,9 @@ export function calculateStats(trades: Trade[]): TradeStats {
     totalProfit,
     totalLoss,
     netProfitLoss,
-    avgRiskReward: 0, // Removed for now
-    bestTrade: 0, // Removed for now
-    worstTrade: 0, // Removed for now
+    avgRiskReward: 0, // No longer used
+    bestTrade,
+    worstTrade,
     avgWin,
     avgLoss,
   };
