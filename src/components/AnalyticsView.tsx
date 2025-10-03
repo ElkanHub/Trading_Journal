@@ -69,17 +69,17 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">Total Profit</span>
-                <span className="text-emerald-500 font-bold">${displayStats.totalProfit.toFixed(2)}</span>
+                <span className="text-emerald-500 font-bold">${(displayStats?.totalProfit ?? 0).toFixed(2)}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-slate-400">Total Loss</span>
-                <span className="text-red-500 font-bold">-${displayStats.totalLoss.toFixed(2)}</span>
+                <span className="text-red-500 font-bold">-${(displayStats?.totalLoss ?? 0).toFixed(2)}</span>
               </div>
               <div className="border-t border-slate-700 pt-3 mt-3">
                 <div className="flex items-center justify-between">
                   <span className="text-white font-semibold">Net P/L</span>
-                  <span className={`font-bold text-xl ${displayStats.netProfitLoss > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
-                    ${displayStats.netProfitLoss.toFixed(2)}
+                  <span className={`font-bold text-xl ${displayStats?.netProfitLoss > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+                    ${(displayStats?.netProfitLoss ?? 0).toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -97,7 +97,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
               <div className="flex items-center justify-between mb-2">
                 <span className="text-white font-semibold">{pair}</span>
                 <span className={`font-bold ${data.totalPL > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
-                  ${data.totalPL.toFixed(2)}
+                  ${(data.totalPL ?? 0).toFixed(2)}
                 </span>
               </div>
               <div className="flex items-center gap-4 text-sm">

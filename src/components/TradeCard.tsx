@@ -20,7 +20,7 @@ export const TradeCard: React.FC<TradeCardProps> = ({ trade, onEdit, onDelete })
           </span>
         </div>
         <div className={`text-right ${isProfit ? 'text-emerald-500' : 'text-red-500'}`}>
-          <p className="font-bold text-2xl">{isProfit ? '+' : ''}{trade.netProfit.toFixed(2)}</p>
+          <p className="font-bold text-2xl">{isProfit ? '+' : ''}{(trade?.netProfit ?? 0).toFixed(2)}</p>
         </div>
       </div>
       

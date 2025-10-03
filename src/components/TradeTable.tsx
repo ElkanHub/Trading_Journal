@@ -124,12 +124,10 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
               <td className="py-3 px-4 text-right text-slate-300">
                 {trade.entryPrice.toFixed(5)}
               </td>
-              <td
-                className={`py-3 px-4 text-right font-bold text-sm ${
-                  trade.netProfit > 0 ? 'text-emerald-500' : 'text-red-500'
-                }`}
-              >
-                {trade.netProfit > 0 ? '+' : ''}${trade.netProfit.toFixed(2)}
+              <td className={`py-3 px-4 text-right font-bold text-sm ${
+                trade?.netProfit > 0 ? 'text-emerald-500' : 'text-red-500'
+              }`}>
+                {trade?.netProfit > 0 ? '+' : ''}${(trade?.netProfit ?? 0).toFixed(2)}
               </td>
               <td className="py-3 px-4 text-slate-400 text-sm">{trade.strategy}</td>
               <td className="py-3 px-4 text-right">

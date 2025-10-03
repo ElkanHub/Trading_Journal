@@ -34,15 +34,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
         />
         <StatCard
           title="Win Rate"
-          value={`${(stats.winRate ?? 0).toFixed(1)}%`}
-          subtitle={`${(stats.winningTrades ?? 0)}W / ${(stats.losingTrades ?? 0)}L`}
-          trend={stats.winRate >= 50 ? "up" : "down"}
+          value={`${(stats?.winRate ?? 0).toFixed(1)}%`}
+          subtitle={`${(stats?.winningTrades ?? 0)}W / ${(stats?.losingTrades ?? 0)}L`}
+          trend={stats?.winRate >= 50 ? "up" : "down"}
         />
         <StatCard
           title="Net P/L"
-          value={`$${(stats.netProfitLoss ?? 0).toFixed(2)}`}
+          value={`$${(stats?.netProfitLoss ?? 0).toFixed(2)}`}
           subtitle="All time"
-          trend={stats.netProfitLoss > 0 ? "up" : "down"}
+          trend={stats?.netProfitLoss > 0 ? "up" : "down"}
         />
       </div>
 
