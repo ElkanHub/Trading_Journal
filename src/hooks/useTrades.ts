@@ -1,10 +1,19 @@
-"use client"
-import { useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { journalService } from '@/lib/journalService';
-import { useAuth } from './useAuth';
+import { useAuth } from '@/hooks/useAuth';
 import { Trade } from '@/types/trade';
 
-export const useTrades = () => {
+interface TradesContextType {
+  trades: Trade[];
+  loading: boolean;
+  addTrade: (trade: Omit<Trade, 'id'>) => Promise<void>;
+  updateTrade: (trade: Trade) => Promise<void>;
+  deleteTrade: (id: string) => Promise<void>;
+}
+
+const TradesContext = createContext<TradesContextType | undefined>(undefined);
+
+export const TradesProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,20 +35,34 @@ export const useTrades = () => {
   const addTrade = async (trade: Omit<Trade, 'id'>) => {
     if (!user) return;
     const newTrade = await journalService.addTrade(user.uid, trade);
-    setTrades([newTrade, ...trades]);
+    setTrades((prevTrades) => [newTrade, ...prevTrades]);
   };
 
   const updateTrade = async (trade: Trade) => {
     if (!user) return;
     const updatedTrade = await journalService.updateTrade(user.uid, trade);
-    setTrades(trades.map(t => t.id === trade.id ? updatedTrade : t));
+    setTrades((prevTrades) =>
+      prevTrades.map((t) => (t.id === trade.id ? updatedTrade : t))
+    );
   };
 
   const deleteTrade = async (id: string) => {
     if (!user) return;
     await journalService.deleteTrade(user.uid, id);
-    setTrades(trades.filter(t => t.id !== id));
+    setTrades((prevTrades) => prevTrades.filter((t) => t.id !== id));
   };
 
-  return { trades, loading, addTrade, updateTrade, deleteTrade };
+  return (
+    <TradesContext.Provider value={{ trades, loading, addTrade, updateTrade, deleteTrade }}>
+      {children}
+    </TradesContext.Provider>
+  );
+};
+
+export const useTrades = () => {
+  const context = useContext(TradesContext);
+  if (context === undefined) {
+    throw new Error('useTrades must be used within a TradesProvider');
+  }
+  return context;
 };
