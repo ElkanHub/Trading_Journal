@@ -39,8 +39,8 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
     e.preventDefault();
     
     const entry = parseFloat(formData.entryPrice);
-    const profit = formData.profit ? parseFloat(formData.profit) : undefined;
-    const loss = formData.loss ? parseFloat(formData.loss) : undefined;
+    const profit = formData.profit ? parseFloat(formData.profit) : null;
+    const loss = formData.loss ? parseFloat(formData.loss) : null;
 
     const netProfit = profit ? profit : loss ? -loss : 0;
     

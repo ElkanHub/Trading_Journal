@@ -6,6 +6,16 @@ import { Trade } from '@/types/trade';
 
 const useRealtimeDB = true; // switch to false for Firestore
 
+const cleanupObject = (obj: any) => {
+  const newObj: any = {};
+  Object.keys(obj).forEach(key => {
+    if (obj[key] !== null && obj[key] !== undefined) {
+      newObj[key] = obj[key];
+    }
+  });
+  return newObj;
+};
+
 // --- Firestore Implementation ---
 const firestoreService = {
   async addTrade(uid: string, trade: Omit<Trade, 'id'>): Promise<Trade> {
@@ -57,7 +67,8 @@ const realtimeDbService = {
     try {
       const tradesRef = ref(realtimeDb!, `users/${uid}/trades`);
       const newTradeRef = push(tradesRef);
-      await update(newTradeRef, trade);
+      const tradeData = cleanupObject(trade);
+      await update(newTradeRef, tradeData);
       return { ...trade, id: newTradeRef.key! };
     } catch (error) {
       console.error("Error adding trade to Realtime DB:", error);
@@ -83,7 +94,8 @@ const realtimeDbService = {
   async updateTrade(uid: string, trade: Trade): Promise<Trade> {
     try {
       const tradeRef = ref(realtimeDb!, `users/${uid}/trades/${trade.id}`);
-      await update(tradeRef, trade);
+      const tradeData = cleanupObject(trade);
+      await update(tradeRef, tradeData);
       const snapshot = await get(tradeRef);
       return { id: snapshot.key!, ...snapshot.val() };
     } catch (error) {
