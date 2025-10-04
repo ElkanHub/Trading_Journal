@@ -33,9 +33,17 @@ export const TradesProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addTrade = async (trade: Omit<Trade, 'id'>) => {
-    if (!user) return;
-    const newTrade = await journalService.addTrade(user.uid, trade);
-    setTrades((prevTrades) => [newTrade, ...prevTrades]);
+    if (!user) {
+      console.error("No user found. Cannot add trade.");
+      return;
+    }
+    console.log("Adding trade for user:", user.uid, trade);
+    try {
+      const newTrade = await journalService.addTrade(user.uid, trade);
+      setTrades((prevTrades) => [newTrade, ...prevTrades]);
+    } catch (error) {
+      console.error("Error adding trade:", error);
+    }
   };
 
   const updateTrade = async (trade: Trade) => {
