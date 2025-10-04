@@ -11,8 +11,8 @@ export interface Trade {
   notes: string;
   tags: string[];
   outcome: "win" | "loss" | "breakeven";
-  profit?: number;
-  loss?: number;
+  profit?: number | null;
+  loss?: number | null;
   netProfit: number;
 }
 
