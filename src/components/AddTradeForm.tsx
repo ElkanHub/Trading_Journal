@@ -1,11 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Trade } from '@/types/trade';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem } from '@/components/ui/command';
+import { Button } from '@/components/ui/button';
+import { ChevronsUpDown } from 'lucide-react';
+
 
 interface AddTradeFormProps {
   onSubmit: (trade: Omit<Trade, 'id'>) => void;
   onCancel: () => void;
   initialValues?: Trade;
 }
+
+const currencyPairs = [
+  // Majors
+  'EUR/USD', 'USD/JPY', 'GBP/USD', 'USD/CHF', 'AUD/USD', 'USD/CAD', 'NZD/USD',
+  // Minors
+  'EUR/GBP', 'EUR/CHF', 'EUR/JPY', 'GBP/JPY', 'AUD/JPY', 'CAD/JPY', 'NZD/JPY',
+  'AUD/NZD', 'AUD/CHF', 'GBP/CHF', 'CAD/CHF',
+  // Exotics
+  'USD/RUB', 'GBP/TRY', 'EUR/SEK', 'USD/SGD', 'AUD/NOK', 'AUD/PLN', 'AUD/SEK', 
+  'AUD/SGD', 'CAD/SGD', 'CHF/SEK', 'CHF/SGD', 'EUR/CZK', 'EUR/HUF', 'EUR/NOK', 
+  'EUR/PLN', 'EUR/RON', 'EUR/RUB', 'EUR/TRY', 'NOK/TRY', 'TRY/RUB',
+];
 
 export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, initialValues }) => {
   const [formData, setFormData] = useState({
@@ -21,6 +38,8 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
     notes: '',
     tags: ''
   });
+  const [popoverOpen, setPopoverOpen] = useState(false);
+
 
   useEffect(() => {
     if (initialValues) {
@@ -65,18 +84,40 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-slate-300 mb-1">Currency Pair</label>
-          <select 
-            value={formData.pair}
-            onChange={(e) => setFormData({...formData, pair: e.target.value})}
-            className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white"
-          >
-            <option>EUR/USD</option>
-            <option>GBP/USD</option>
-            <option>USD/JPY</option>
-            <option>GBP/JPY</option>
-            <option>EUR/JPY</option>
-            <option>AUD/USD</option>
-          </select>
+          <Popover open={popoverOpen} onOpenChange={setPopoverOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={popoverOpen}
+                className="w-full justify-between bg-slate-700 border-slate-600 text-white hover:bg-slate-600 hover:text-white"
+              >
+                {formData.pair}
+                <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0 bg-slate-800 border-slate-700">
+              <Command>
+                <CommandInput placeholder="Search currency pair..." className="h-9 bg-slate-700 border-slate-600 text-white" />
+                <CommandEmpty>No currency pair found.</CommandEmpty>
+                <CommandGroup>
+                  {currencyPairs.map((pair) => (
+                    <CommandItem
+                      key={pair}
+                      value={pair}
+                      onSelect={(currentValue) => {
+                        setFormData({ ...formData, pair: currentValue === formData.pair ? "" : currentValue });
+                        setPopoverOpen(false);
+                      }}
+                      className="text-white hover:bg-slate-700"
+                    >
+                      {pair}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
         </div>
         
         <div>
