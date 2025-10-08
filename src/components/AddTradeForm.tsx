@@ -11,7 +11,6 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
   const [formData, setFormData] = useState({
     pair: 'EUR/USD',
     direction: 'long' as 'long' | 'short',
-    entryPrice: '',
     profit: '',
     loss: '',
     entryTime: '',
@@ -28,7 +27,6 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
       setFormData({
         ...initialValues,
         tags: initialValues.tags.join(', '),
-        entryPrice: initialValues.entryPrice.toString(),
         profit: initialValues.profit?.toString() || '',
         loss: initialValues.loss?.toString() || '',
       });
@@ -38,7 +36,6 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const entry = parseFloat(formData.entryPrice);
     const profit = formData.profit ? parseFloat(formData.profit) : null;
     const loss = formData.loss ? parseFloat(formData.loss) : null;
 
@@ -47,7 +44,6 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
     const trade: Omit<Trade, 'id'> = {
       pair: formData.pair,
       direction: formData.direction,
-      entryPrice: entry,
       entryTime: formData.entryTime,
       exitTime: formData.exitTime,
       strategy: formData.strategy,
@@ -98,18 +94,6 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-1">Entry Price</label>
-          <input 
-            type="number" 
-            step="0.00001"
-            value={formData.entryPrice}
-            onChange={(e) => setFormData({...formData, entryPrice: e.target.value})}
-            className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white"
-            required
-          />
-        </div>
-        
-        <div>
           <label className="block text-sm font-medium text-slate-300 mb-1">Profit</label>
           <input 
             type="number" 
@@ -118,6 +102,18 @@ export const AddTradeForm: React.FC<AddTradeFormProps> = ({ onSubmit, onCancel, 
             onChange={(e) => setFormData({...formData, profit: e.target.value, loss: ''})}
             className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white"
             disabled={!!formData.loss}
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-slate-300 mb-1">Loss</label>
+          <input 
+            type="number" 
+            step="0.01"
+            value={formData.loss}
+            onChange={(e) => setFormData({...formData, loss: e.target.value, profit: ''})}
+            className="w-full bg-slate-700 border border-slate-600 rounded px-3 py-2 text-white"
+            disabled={!!formData.profit}
           />
         </div>
       </div>

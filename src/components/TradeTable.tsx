@@ -82,11 +82,7 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
                 Direction {getSortIndicator('direction')}
               </button>
             </th>
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
-              <button onClick={() => requestSort('entryPrice')} className="flex items-center">
-                Entry {getSortIndicator('entryPrice')}
-              </button>
-            </th>
+
             <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
               <button onClick={() => requestSort('netProfit')} className="flex items-center">
                 Net P/L {getSortIndicator('netProfit')}
@@ -121,9 +117,7 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
                   {trade.direction.toUpperCase()}
                 </span>
               </td>
-              <td className="py-3 px-4 text-right text-slate-300">
-                {trade.entryPrice.toFixed(5)}
-              </td>
+
               <td className={`py-3 px-4 text-right font-bold text-sm ${
                 trade?.netProfit > 0 ? 'text-emerald-500' : 'text-red-500'
               }`}>

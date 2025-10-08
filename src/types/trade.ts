@@ -2,7 +2,6 @@ export interface Trade {
   id: string;
   pair: string;
   direction: "long" | "short";
-  entryPrice: number;
   entryTime: string;
   exitTime: string;
   strategy: string;

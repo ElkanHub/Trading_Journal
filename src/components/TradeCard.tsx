@@ -25,10 +25,7 @@ export const TradeCard: React.FC<TradeCardProps> = ({ trade, onEdit, onDelete })
       </div>
       
       <div className="grid grid-cols-2 gap-2 text-sm mb-3">
-        <div>
-          <p className="text-slate-500">Entry</p>
-          <p className="text-white">{trade.entryPrice}</p>
-        </div>
+
       </div>
       
       <p className="text-slate-400 text-xs mb-2">{trade.strategy}</p>

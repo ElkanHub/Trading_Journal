@@ -157,7 +157,6 @@ interface Trade {
   id: string;
   pair: string; // e.g., "EUR/USD"
   direction: "long" | "short";
-  entryPrice: number;
   exitPrice: number;
   lotSize: number;
   stopLoss: number;
