@@ -1,4 +1,3 @@
-import { ThemeProvider } from "@/components/theme-provider";
 import { Providers } from "./providers";
 import "../index.css";
 
@@ -10,14 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Providers>{children}</Providers>
-        </ThemeProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
