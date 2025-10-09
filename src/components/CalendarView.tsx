@@ -6,8 +6,7 @@ import 'react-day-picker/dist/style.css';
 import { Trade } from '@/types/trade';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import { useIsMobile } from '@/hooks/use-mobile';
-import { DayCell } from './DayCell';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 
 interface CalendarViewProps {
   trades: Trade[];
@@ -19,8 +18,41 @@ export type DailySummary = {
   totalPL: number;
 };
 
+function DayContent(props: { date: Date, dailySummaries: Record<string, DailySummary> }): React.ReactElement {
+  const summary = props.dailySummaries[props.date.toDateString()];
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <div className="relative w-full h-full flex flex-col items-center justify-center cursor-pointer">
+          <span>{props.date.getDate()}</span>
+        </div>
+      </PopoverTrigger>
+      {summary &&
+        <PopoverContent className="w-48">
+          <div className="space-y-2">
+            <h4 className="font-semibold">{props.date.toDateString()}</h4>
+            <div className="flex justify-between">
+              <span>Wins:</span>
+              <span className="text-emerald-500">{summary.wins}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Losses:</span>
+              <span className="text-red-500">{summary.losses}</span>
+            </div>
+            <div className="flex justify-between">
+              <span>Net P/L:</span>
+              <span className={summary.totalPL > 0 ? 'text-emerald-500' : 'text-red-500'}>
+                {summary.totalPL.toFixed(2)}
+              </span>
+            </div>
+          </div>
+        </PopoverContent>
+      }
+    </Popover>
+  );
+}
+
 export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
-  const isMobile = useIsMobile();
   const dailySummaries = trades.reduce((acc, trade) => {
     const date = new Date(trade.entryTime).toDateString();
     if (!acc[date]) {
@@ -48,14 +80,10 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
 
   const modifiersStyles = {
     win: {
-      backgroundColor: 'rgba(16, 185, 129, 0.2)',
-      borderColor: 'rgba(16, 185, 129, 1)',
-      color: 'white',
+      backgroundColor: 'hsl(var(--muted-green))',
     },
     loss: {
-      backgroundColor: 'rgba(239, 68, 68, 0.2)',
-      borderColor: 'rgba(239, 68, 68, 1)',
-      color: 'white',
+      backgroundColor: 'hsl(var(--muted-red))',
     },
   };
 
@@ -66,17 +94,17 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
       </CardHeader>
       <CardContent className="flex justify-center">
         <DayPicker
-          numberOfMonths={isMobile ? 1 : 2}
+          numberOfMonths={1}
           modifiers={modifiers}
           modifiersStyles={modifiersStyles}
           components={{
-            Day: (props) => <DayCell date={props.date} dailySummaries={dailySummaries} />,
+            DayContent: (props) => <DayContent date={props.date} dailySummaries={dailySummaries} />,
           }}
           className="bg-card text-foreground"
           classNames={{
             caption: 'text-foreground',
             head: 'text-muted-foreground',
-            day: isMobile ? 'w-12 h-12 border border-border text-foreground rounded-lg' : 'w-16 h-16 border border-border text-foreground rounded-lg',
+            day: 'w-16 h-16 border border-border text-foreground rounded-lg',
             nav_button: 'text-foreground',
           }}
         />
