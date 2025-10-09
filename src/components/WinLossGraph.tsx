@@ -111,9 +111,9 @@ export const WinLossGraph: React.FC<WinLossGraphProps> = ({ trades }) => {
   };
 
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+    <div className="bg-card border border-border rounded-lg p-6">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-white">Win/Loss Progress</h3>
+        <h3 className="text-lg font-semibold text-foreground">Win/Loss Progress</h3>
         <div className="flex items-center gap-2">
           {(['7d', '30d', '90d', '1y'] as TimeRange[]).map(range => (
             <button
@@ -121,8 +121,8 @@ export const WinLossGraph: React.FC<WinLossGraphProps> = ({ trades }) => {
               onClick={() => setTimeRange(range)}
               className={`px-3 py-1 text-sm rounded ${
                 timeRange === range
-                  ? 'bg-slate-600 text-white'
-                  : 'bg-slate-700 text-slate-400 hover:bg-slate-600'
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-muted text-muted-foreground hover:bg-accent'
               }`}
             >
               {range.toUpperCase()}

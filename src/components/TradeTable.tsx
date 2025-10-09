@@ -66,46 +66,46 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-slate-700">
-            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
+          <tr className="border-b border-border">
+            <th className="text-left py-3 px-4 text-muted-foreground font-medium text-sm">
               <button onClick={() => requestSort('entryTime')} className="flex items-center">
                 Date {getSortIndicator('entryTime')}
               </button>
             </th>
-            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
+            <th className="text-left py-3 px-4 text-muted-foreground font-medium text-sm">
               <button onClick={() => requestSort('pair')} className="flex items-center">
                 Pair {getSortIndicator('pair')}
               </button>
             </th>
-            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
+            <th className="text-left py-3 px-4 text-muted-foreground font-medium text-sm">
               <button onClick={() => requestSort('direction')} className="flex items-center">
                 Direction {getSortIndicator('direction')}
               </button>
             </th>
 
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium text-sm">
               <button onClick={() => requestSort('netProfit')} className="flex items-center">
                 Net P/L {getSortIndicator('netProfit')}
               </button>
             </th>
-            <th className="text-left py-3 px-4 text-slate-400 font-medium text-sm">
+            <th className="text-left py-3 px-4 text-muted-foreground font-medium text-sm">
               <button onClick={() => requestSort('strategy')} className="flex items-center">
                 Strategy {getSortIndicator('strategy')}
               </button>
             </th>
-            <th className="text-right py-3 px-4 text-slate-400 font-medium text-sm">Actions</th>
+            <th className="text-right py-3 px-4 text-muted-foreground font-medium text-sm">Actions</th>
           </tr>
         </thead>
         <tbody>
           {sortedTrades.map((trade) => (
             <tr
               key={trade.id}
-              className="border-b border-slate-800 hover:bg-slate-800/50 transition-colors"
+              className="border-b border-border hover:bg-muted/50 transition-colors"
             >
-              <td className="py-3 px-4 text-slate-300 text-sm">
+              <td className="py-3 px-4 text-muted-foreground text-sm">
                 {new Date(trade.entryTime).toLocaleDateString()}
               </td>
-              <td className="py-3 px-4 text-white font-medium">{trade.pair}</td>
+              <td className="py-3 px-4 text-foreground font-medium">{trade.pair}</td>
               <td className="py-3 px-4">
                 <span
                   className={`text-xs px-2 py-1 rounded ${
@@ -123,11 +123,11 @@ export const TradeTable: React.FC<TradeTableProps> = ({ trades, onEdit, onDelete
               }`}>
                 {trade?.netProfit > 0 ? '+' : ''}${(trade?.netProfit ?? 0).toFixed(2)}
               </td>
-              <td className="py-3 px-4 text-slate-400 text-sm">{trade.strategy}</td>
+              <td className="py-3 px-4 text-muted-foreground text-sm">{trade.strategy}</td>
               <td className="py-3 px-4 text-right">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <button className="p-1 text-slate-400 hover:text-white">
+                    <button className="p-1 text-muted-foreground hover:text-foreground">
                       <MoreHorizontal size={18} />
                     </button>
                   </DropdownMenuTrigger>

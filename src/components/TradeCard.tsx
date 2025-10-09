@@ -11,10 +11,10 @@ export const TradeCard: React.FC<TradeCardProps> = ({ trade, onEdit, onDelete })
   const isProfit = trade.netProfit > 0;
 
   return (
-    <div className="bg-slate-800 border border-slate-700 rounded-lg p-4 hover:border-slate-600 transition-all">
+    <div className="bg-card border border-border rounded-lg p-4 hover:border-primary/50 transition-all">
       <div className="flex items-start justify-between mb-3">
         <div>
-          <h3 className="text-white font-semibold text-lg">{trade.pair}</h3>
+          <h3 className="text-foreground font-semibold text-lg">{trade.pair}</h3>
           <span className={`text-xs px-2 py-1 rounded ${trade.direction === 'long' ? 'bg-emerald-900/30 text-emerald-400' : 'bg-red-900/30 text-red-400'}`}>
             {trade.direction.toUpperCase()}
           </span>
@@ -28,8 +28,8 @@ export const TradeCard: React.FC<TradeCardProps> = ({ trade, onEdit, onDelete })
 
       </div>
       
-      <p className="text-slate-400 text-xs mb-2">{trade.strategy}</p>
-      <p className="text-slate-500 text-xs">{new Date(trade.entryTime).toLocaleDateString()}</p>
+      <p className="text-muted-foreground text-xs mb-2">{trade.strategy}</p>
+      <p className="text-muted-foreground text-xs">{new Date(trade.entryTime).toLocaleDateString()}</p>
     </div>
   );
 };

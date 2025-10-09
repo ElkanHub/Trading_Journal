@@ -79,7 +79,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
   };
 
   return (
-    <Card className="bg-slate-800 border-slate-700 text-white">
+    <Card className="bg-card border-border text-foreground">
       <CardHeader>
         <CardTitle>Trade Calendar</CardTitle>
       </CardHeader>
@@ -90,12 +90,12 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
           components={{
             DayContent: (props) => CustomDayContent(props, dailySummaries),
           }}
-          className="bg-slate-800 text-white"
+          className="bg-card text-foreground"
           classNames={{
-            caption: 'text-white',
-            head: 'text-slate-400',
-            day: isMobile ? 'w-12 h-12 border border-slate-700 text-white' : 'w-16 h-16 border border-slate-700 text-white',
-            nav_button: 'text-white',
+            caption: 'text-foreground',
+            head: 'text-muted-foreground',
+            day: isMobile ? 'w-12 h-12 border border-border text-foreground' : 'w-16 h-16 border border-border text-foreground',
+            nav_button: 'text-foreground',
           }}
         />
       </CardContent>

@@ -34,29 +34,29 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-white">Analytics</h2>
+      <h2 className="text-2xl font-bold text-foreground">Analytics</h2>
 
       {/* Performance Summary */}
       {displayStats && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Win/Loss Distribution</h3>
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Win/Loss Distribution</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Winning Trades</span>
+                <span className="text-muted-foreground">Winning Trades</span>
                 <span className="text-emerald-500 font-bold">{displayStats.winningTrades}</span>
               </div>
-              <div className="w-full bg-slate-700 rounded-full h-3">
+              <div className="w-full bg-muted rounded-full h-3">
                 <div 
                   className="bg-emerald-500 h-3 rounded-full transition-all"
                   style={{ width: `${displayStats.winRate}%` }}
                 ></div>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Losing Trades</span>
+                <span className="text-muted-foreground">Losing Trades</span>
                 <span className="text-red-500 font-bold">{displayStats.losingTrades}</span>
               </div>
-              <div className="w-full bg-slate-700 rounded-full h-3">
+              <div className="w-full bg-muted rounded-full h-3">
                 <div 
                   className="bg-red-500 h-3 rounded-full transition-all"
                   style={{ width: `${100 - displayStats.winRate}%` }}
@@ -65,20 +65,20 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
             </div>
           </div>
 
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Profit/Loss Breakdown</h3>
+          <div className="bg-card border border-border rounded-lg p-6">
+            <h3 className="text-lg font-semibold text-foreground mb-4">Profit/Loss Breakdown</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Total Profit</span>
+                <span className="text-muted-foreground">Total Profit</span>
                 <span className="text-emerald-500 font-bold">${(displayStats?.totalProfit ?? 0).toFixed(2)}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-slate-400">Total Loss</span>
+                <span className="text-muted-foreground">Total Loss</span>
                 <span className="text-red-500 font-bold">-${(displayStats?.totalLoss ?? 0).toFixed(2)}</span>
               </div>
-              <div className="border-t border-slate-700 pt-3 mt-3">
+              <div className="border-t border-border pt-3 mt-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-white font-semibold">Net P/L</span>
+                  <span className="text-foreground font-semibold">Net P/L</span>
                   <span className={`font-bold text-xl ${displayStats?.netProfitLoss > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
                     ${(displayStats?.netProfitLoss ?? 0).toFixed(2)}
                   </span>
@@ -90,13 +90,13 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
       )}
 
       {/* Performance by Pair */}
-      <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-white mb-4">Performance by Currency Pair</h3>
+      <div className="bg-card border border-border rounded-lg p-6">
+        <h3 className="text-lg font-semibold text-foreground mb-4">Performance by Currency Pair</h3>
         <div className="space-y-4">
           {Object.entries(pairPerformance).map(([pair, data]) => (
-            <div key={pair} className="border-b border-slate-700 pb-3 last:border-0">
+            <div key={pair} className="border-b border-border pb-3 last:border-0">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-white font-semibold">{pair}</span>
+                <span className="text-foreground font-semibold">{pair}</span>
                 <span className={`font-bold ${data.totalPL > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
                   ${(data.totalPL ?? 0).toFixed(2)}
                 </span>
@@ -104,7 +104,7 @@ export const AnalyticsView: React.FC<AnalyticsViewProps> = ({ trades, stats, loa
               <div className="flex items-center gap-4 text-sm">
                 <span className="text-emerald-400">{data.wins} wins</span>
                 <span className="text-red-400">{data.losses} losses</span>
-                <span className="text-slate-400">
+                <span className="text-muted-foreground">
                   {((data.wins / (data.wins + data.losses)) * 100).toFixed(1)}% win rate
                 </span>
               </div>
