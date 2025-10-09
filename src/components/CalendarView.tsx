@@ -24,12 +24,17 @@ interface DayContentProps {
 function CustomDayContent(props: DayContentProps, dailySummaries: Record<string, DailySummary>): React.ReactElement {
   const summary = dailySummaries[props.date.toDateString()];
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
+    <div className="relative w-full h-full flex flex-col items-center justify-center">
       <span>{props.date.getDate()}</span>
       {summary && (
-        <div className="absolute bottom-1 left-1 text-xs">
-          <span className="text-emerald-500">{summary.wins}W</span>
-          <span className="text-red-500">{summary.losses}L</span>
+        <div className="absolute bottom-1 left-1 text-xs text-center">
+          <div className="flex">
+            <span className="text-emerald-500">{summary.wins}W</span>
+            <span className="text-red-500">{summary.losses}L</span>
+          </div>
+          <span className={`font-bold ${summary.totalPL > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+            {summary.totalPL.toFixed(0)}
+          </span>
         </div>
       )}
     </div>
@@ -94,7 +99,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
           classNames={{
             caption: 'text-foreground',
             head: 'text-muted-foreground',
-            day: isMobile ? 'w-12 h-12 border border-border text-foreground' : 'w-16 h-16 border border-border text-foreground',
+            day: isMobile ? 'w-16 h-16 border border-border text-foreground rounded-lg' : 'w-24 h-24 border border-border text-foreground rounded-lg',
             nav_button: 'text-foreground',
           }}
         />
