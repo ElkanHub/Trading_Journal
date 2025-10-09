@@ -99,7 +99,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
           classNames={{
             caption: 'text-foreground',
             head: 'text-muted-foreground',
-            day: isMobile ? 'w-14 h-18 border border-border text-foreground rounded-lg' : 'w-24 h-24 border border-border text-foreground rounded-lg',
+            day: isMobile ? 'w-14 h-15 border border-border text-foreground rounded-lg' : 'w-24 h-24 border border-border text-foreground rounded-lg',
             nav_button: 'text-foreground',
           }}
         />
