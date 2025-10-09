@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { DailySummary } from './CalendarView'; // Assuming DailySummary is exported from CalendarView
 
 interface DayCellProps {
