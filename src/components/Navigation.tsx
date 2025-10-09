@@ -21,7 +21,7 @@ export const Navigation: React.FC = () => {
   ];
 
   return (
-    <nav className="bg-background border-b border-slate-700">
+    <nav className="bg-card border-b border-slate-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="mr-2 md:m-0 flex items-center">
