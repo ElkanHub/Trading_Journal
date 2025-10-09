@@ -6,6 +6,7 @@ import 'react-day-picker/dist/style.css';
 import { Trade } from '@/types/trade';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+import { useIsMobile } from '@/hooks/use-mobile';
 import { DayCell } from './DayCell';
 
 interface CalendarViewProps {
