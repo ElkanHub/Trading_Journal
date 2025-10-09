@@ -25,6 +25,11 @@ function DayContent(props: { date: Date, dailySummaries: Record<string, DailySum
       <PopoverTrigger asChild>
         <div className="relative w-full h-full flex flex-col items-center justify-center cursor-pointer">
           <span>{props.date.getDate()}</span>
+          {summary && (
+            <span className={`absolute bottom-1 text-xs font-bold ${summary.totalPL > 0 ? 'text-emerald-500' : 'text-red-500'}`}>
+              {summary.totalPL.toFixed(0)}
+            </span>
+          )}
         </div>
       </PopoverTrigger>
       {summary &&
