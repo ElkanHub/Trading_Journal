@@ -7,6 +7,7 @@ import { BarChartBig, PenToolIcon, LineChartIcon } from 'lucide-react';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { useAuth } from '@/hooks/useAuth';
+import { ThemeSwitcher } from './ThemeSwitcher';
 
 export const Navigation: React.FC = () => {
   const { user } = useAuth();
@@ -20,12 +21,12 @@ export const Navigation: React.FC = () => {
   ];
 
   return (
-    <nav className="bg-slate-800 border-b border-slate-700">
+    <nav className="bg-background border-b border-slate-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="mr-2 md:m-0 flex items-center">
             <Link href="/">
-              <h1 className="text-2xl font-bold text-white">
+              <h1 className="text-2xl font-bold text-foreground">
                 Forex<span className="text-emerald-400">Pencil</span>
               </h1>
             </Link>
@@ -39,7 +40,7 @@ export const Navigation: React.FC = () => {
                 className={`items-center flex justify-center md:flex p-2 md:px-4 md:py-2 rounded-lg font-medium transition-colors ${
                   pathname === item.href
                     ? 'bg-emerald-600 text-white'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-700'
+                    : 'text-muted-foreground hover:text-foreground'
                 }`}
               >
                 <span className="mr-2">{item.icon}</span>
@@ -61,6 +62,7 @@ export const Navigation: React.FC = () => {
                 Login
               </Link>
             )}
+            <ThemeSwitcher />
           </div>
         </div>
       </div>
