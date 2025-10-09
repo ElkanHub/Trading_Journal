@@ -23,11 +23,12 @@ interface DayContentProps {
 
 function CustomDayContent(props: DayContentProps, dailySummaries: Record<string, DailySummary>): React.ReactElement {
   const summary = dailySummaries[props.date.toDateString()];
+  const isMobile = useIsMobile();
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center">
       <span>{props.date.getDate()}</span>
       {summary && (
-        <div className="absolute bottom-1 left-1 text-xs text-center">
+        <div className={`absolute bottom-1 left-1 ${isMobile ? 'text-[10px]' : 'text-xs'} text-center`}>
           <div className="flex">
             <span className="text-emerald-500">{summary.wins}W</span>
             <span className="text-red-500">{summary.losses}L</span>
@@ -90,6 +91,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
       </CardHeader>
       <CardContent className="flex justify-center">
         <DayPicker
+          numberOfMonths={isMobile ? 1 : 2}
           modifiers={modifiers}
           modifiersStyles={modifiersStyles}
           components={{
@@ -99,7 +101,7 @@ export const CalendarView: React.FC<CalendarViewProps> = ({ trades }) => {
           classNames={{
             caption: 'text-foreground',
             head: 'text-muted-foreground',
-            day: isMobile ? 'w-14 h-15 border border-border text-foreground rounded-lg' : 'w-24 h-24 border border-border text-foreground rounded-lg',
+            day: isMobile ? 'w-12 h-16 border border-border text-foreground rounded-lg' : 'w-24 h-24 border border-border text-foreground rounded-lg',
             nav_button: 'text-foreground',
           }}
         />
