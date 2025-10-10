@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { journalService } from '@/lib/journalService';
+import { useJournalService } from '@/lib/hooks/useJournalService';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { Trade } from '@/types/trade';
 
@@ -15,6 +15,7 @@ const TradesContext = createContext<TradesContextType | undefined>(undefined);
 
 export const TradesProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
+  const journalService = useJournalService();
   const [trades, setTrades] = useState<Trade[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -22,7 +23,7 @@ export const TradesProvider = ({ children }: { children: ReactNode }) => {
     if (user) {
       loadTrades();
     }
-  }, [user]);
+  }, [user, journalService]);
 
   const loadTrades = async () => {
     if (!user) return;

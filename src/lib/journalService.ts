@@ -4,7 +4,7 @@ import { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, getDoc } from '
 import { ref, push, get, remove, update } from 'firebase/database';
 import { Trade } from '@/types/trade';
 
-const useRealtimeDB = true; // switch to false for Firestore
+
 
 const cleanupObject = (obj: any) => {
   const newObj: any = {};
@@ -17,7 +17,7 @@ const cleanupObject = (obj: any) => {
 };
 
 // --- Firestore Implementation ---
-const firestoreService = {
+export const firestoreService = {
   async addTrade(uid: string, trade: Omit<Trade, 'id'>): Promise<Trade> {
     try {
       const docRef = await addDoc(collection(firestoreDb, `users/${uid}/trades`), trade);
@@ -62,7 +62,7 @@ const firestoreService = {
 };
 
 // --- Realtime Database Implementation ---
-const realtimeDbService = {
+export const realtimeDbService = {
   async addTrade(uid: string, trade: Omit<Trade, 'id'>): Promise<Trade> {
     try {
       const tradesRef = ref(realtimeDb!, `users/${uid}/trades`);
@@ -115,5 +115,3 @@ const realtimeDbService = {
   }
 };
 
-// Export the active service
-export const journalService = useRealtimeDB ? realtimeDbService : firestoreService;

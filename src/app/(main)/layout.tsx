@@ -6,12 +6,14 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { AppProvider } from "@/contexts/AppContext";
 import { TradesProvider } from "@/lib/hooks/useTrades";
+import { DatabaseProvider } from "@/contexts/DatabaseContext";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthWrapper>
       <AppProvider>
-        <TradesProvider>
+        <DatabaseProvider>
+          <TradesProvider>
           <div className="min-h-screen bg-background">
             <Navigation />
             <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -25,8 +27,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
             </main>
             <Footer />
           </div>
-        </TradesProvider>
-      </AppProvider>
+                  </TradesProvider>
+                </DatabaseProvider>      </AppProvider>
     </AuthWrapper>
   );
 }
