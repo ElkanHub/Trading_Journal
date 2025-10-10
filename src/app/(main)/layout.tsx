@@ -4,7 +4,7 @@ import { AuthWrapper } from "@/components/AuthWrapper";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { AppProvider } from "@/contexts/AppContext";
-import { TradesProvider } from "@/hooks/useTrades";
+import { TradesProvider } from "@/lib/hooks/useTrades";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   return (
