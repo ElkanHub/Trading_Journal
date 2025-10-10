@@ -20,6 +20,8 @@ export const Navigation: React.FC = () => {
     { href: '/analytics', label: 'Analytics', icon: <LineChartIcon /> }
   ];
 
+  // Preparing for Beta Testing 
+  
   return (
     <nav className="bg-card border-b border-slate-700">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
