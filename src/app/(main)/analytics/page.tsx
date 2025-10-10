@@ -1,6 +1,6 @@
 'use client';
 
-import { useTrades } from '@/hooks/useTrades';
+import { useTrades } from '@/lib/hooks/useTrades';
 import { calculateStats } from '@/utils/tradeCalculations';
 import { AnalyticsView } from '@/components/AnalyticsView';
 

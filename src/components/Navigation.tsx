@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { BarChartBig, PenToolIcon, LineChartIcon } from 'lucide-react';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/lib/hooks/useAuth';
 import { ThemeSwitcher } from './ThemeSwitcher';
 
 export const Navigation: React.FC = () => {

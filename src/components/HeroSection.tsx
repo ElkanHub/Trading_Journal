@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/lib/hooks/useAuth';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 

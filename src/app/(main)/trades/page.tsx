@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useTrades } from '@/hooks/useTrades';
+import { useTrades } from '@/lib/hooks/useTrades';
 import { TradesView } from '@/components/TradesView';
 import { Modal } from '@/components/Modal';
 import { AddTradeForm } from '@/components/AddTradeForm';
