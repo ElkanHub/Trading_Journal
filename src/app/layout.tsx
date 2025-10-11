@@ -1,7 +1,5 @@
-import { Providers } from "./providers";
 import "../index.css";
-import BetaFeedbackButton from "@/components/beta/BetaFeedbackButton";
-import { Toaster } from "@/components/ui/toaster";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 
 export default function RootLayout({
   children,
@@ -11,11 +9,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <Providers>
-          {children}
-          <BetaFeedbackButton />
-          <Toaster />
-        </Providers>
+        <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
       </body>
     </html>
   );
