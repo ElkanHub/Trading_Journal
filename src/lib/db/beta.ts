@@ -153,3 +153,27 @@ export const realtimeBetaService = {
     }
   },
 };
+
+
+// Choose which database implementation to use:
+const useRealtimeDB = true; // change to true if you want realtime db
+
+export const getAboutInfo = useRealtimeDB
+  ? realtimeBetaService.getAboutInfo
+  : firestoreBetaService.getAboutInfo;
+
+export const addAboutInfo = useRealtimeDB
+  ? realtimeBetaService.addAboutInfo
+  : firestoreBetaService.addAboutInfo;
+
+export const getFeedback = useRealtimeDB
+  ? realtimeBetaService.getFeedback
+  : firestoreBetaService.getFeedback;
+
+export const addFeedback = useRealtimeDB
+  ? realtimeBetaService.addFeedback
+  : firestoreBetaService.addFeedback;
+
+export const addFeedbackReply = useRealtimeDB
+  ? realtimeBetaService.addFeedbackReply
+  : firestoreBetaService.addFeedbackReply;
