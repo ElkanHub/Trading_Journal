@@ -86,6 +86,17 @@ const Feedback = () => {
               <div key={fb.id} className="border p-4 rounded-lg shadow-sm">
                 <p className="text-muted-foreground">{fb.feedback}</p>
                 {fb.featureRequest && <p className="text-muted-foreground mt-2"><strong>Feature Request:</strong> {fb.featureRequest}</p>}
+                {fb.replies && fb.replies.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <h4 className="font-semibold">Replies:</h4>
+                    {fb.replies.map((reply: any, index: number) => (
+                      <div key={index} className="border-l-2 border-primary pl-2">
+                        <p className="text-sm text-muted-foreground">{reply.reply}</p>
+                        <p className="text-xs text-gray-500">{new Date(reply.createdAt).toLocaleString()}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))
           ) : (

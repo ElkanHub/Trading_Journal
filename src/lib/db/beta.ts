@@ -60,10 +60,21 @@ export const firestoreBetaService = {
           ? query(feedbackCol)
           : query(feedbackCol, where("userId", "==", userId));
       const feedbackSnapshot = await getDocs(q);
-      return feedbackSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
+
+      const feedbackList = await Promise.all(feedbackSnapshot.docs.map(async (doc) => {
+        const feedbackData = doc.data();
+        const repliesCol = collection(firestoreDb, "feedback_replies");
+        const repliesQuery = query(repliesCol, where("feedbackId", "==", doc.id));
+        const repliesSnapshot = await getDocs(repliesQuery);
+        const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
+        return {
+          id: doc.id,
+          ...feedbackData,
+          replies,
+        };
       }));
+
+      return feedbackList;
     } catch (error) {
       console.error("Error fetching feedback (Firestore):", error);
       throw error;
@@ -128,10 +139,29 @@ export const realtimeBetaService = {
       const snapshot = await get(feedbackRef);
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const feedbackList = Object.keys(data).map((key) => ({
+        let feedbackList = Object.keys(data).map((key) => ({
           id: key,
           ...data[key],
         }));
+
+        const repliesRef = ref(realtimeDb!, "feedback_replies");
+        const repliesSnapshot = await get(repliesRef);
+        if (repliesSnapshot.exists()) {
+          const repliesData = repliesSnapshot.val();
+          const repliesByFeedbackId = Object.values(repliesData).reduce((acc: any, reply: any) => {
+            if (!acc[reply.feedbackId]) {
+              acc[reply.feedbackId] = [];
+            }
+            acc[reply.feedbackId].push(reply);
+            return acc;
+          }, {});
+
+          feedbackList = feedbackList.map(feedback => ({
+            ...feedback,
+            replies: repliesByFeedbackId[feedback.id] || [],
+          }));
+        }
+
         if (userId === "all") return feedbackList;
         return feedbackList.filter((item) => item.userId === userId);
       }

@@ -7,11 +7,13 @@
   import { toast } from '@/lib/hooks/use-toast';
   import { useDatabase } from '@/contexts/DatabaseContext';
   import { Switch } from "@/components/ui/switch";
+  
   import { Label } from "@/components/ui/label";
-
+  import ReplyForm from './ReplyForm';
+  
   // In a real app, this should be stored in a secure way, not hardcoded
   const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_UID; // Replace with your actual admin UID
-
+  
   const AdminDashboard = () => {
     const { user } = useAuth();
     const { dbType, setDbType } = useDatabase();
@@ -19,11 +21,11 @@
     const [feedback, setFeedback] = useState<any[]>([]);
     const [aboutTitle, setAboutTitle] = useState('');
     const [aboutContent, setAboutContent] = useState('');
-
+  
     const handleDbSwitch = (isFirestore: boolean) => {
       setDbType(isFirestore ? 'firestore' : 'realtime');
     };
-
+  
     useEffect(() => {
       const fetchFeedback = async () => {
         if (user && user.uid === ADMIN_UID) {
@@ -31,19 +33,22 @@
           setFeedback(feedbackList);
         }
       };
-
+  
       fetchFeedback();
     }, [user, adminService]);
-
+  
     const handleReply = async (feedbackId: string, reply: string) => {
       try {
         await adminService.addFeedbackReply({ feedbackId, reply, createdAt: new Date() });
         toast({ title: 'Success', description: 'Reply sent successfully!' });
+        // Refresh feedback list to show the reply
+        const feedbackList = await adminService.getFeedback('all');
+        setFeedback(feedbackList);
       } catch (error) {
         toast({ title: 'Error', description: 'Something went wrong. Please try again.' });
       }
     };
-
+  
     const handleAddAbout = async (e: React.FormEvent) => {
       e.preventDefault();
       try {
@@ -55,11 +60,11 @@
         toast({ title: 'Error', description: 'Something went wrong. Please try again.' });
       }
     };
-
+  
     if (!user || user.uid !== ADMIN_UID) {
       return <div>You are not authorized to view this page.</div>;
     }
-
+  
     return (
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center mb-4">
@@ -81,7 +86,18 @@
                 <div key={fb.id} className="border p-4 rounded-lg shadow-sm">
                   <p className="text-muted-foreground">{fb.feedback}</p>
                   {fb.featureRequest && <p className="text-muted-foreground mt-2"><strong>Feature Request:</strong> {fb.featureRequest}</p>}
-                  {/* Add reply form here */}
+                  <ReplyForm feedbackId={fb.id} onReply={handleReply} />
+                  {fb.replies && fb.replies.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      <h4 className="font-semibold">Replies:</h4>
+                      {fb.replies.map((reply: any, index: number) => (
+                        <div key={index} className="border-l-2 border-primary pl-2">
+                          <p className="text-sm text-muted-foreground">{reply.reply}</p>
+                          <p className="text-xs text-gray-500">{new Date(reply.createdAt).toLocaleString()}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -118,5 +134,6 @@
       </div>
     );
   };
-
+  
   export default AdminDashboard;
+  
