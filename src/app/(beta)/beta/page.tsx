@@ -12,7 +12,7 @@ const BetaPage = () => {
   return (
     <div className="container mx-auto p-4">
         <div className="mr-2 md:m-0 flex items-center">
-        <Link href="/">
+        <Link href="/dashboard">
           <h1 className="text-2xl font-bold text-foreground">
             Forex<span className="text-emerald-400">Pencil</span>
           </h1>
