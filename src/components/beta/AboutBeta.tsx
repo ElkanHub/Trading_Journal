@@ -1,8 +1,7 @@
-
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { getAboutInfo } from '@/lib/db/beta';
+import React, { useState, useEffect } from "react";
+import { getAboutInfo } from "@/lib/db/beta";
 
 const AboutBeta = () => {
   const [aboutInfo, setAboutInfo] = useState<any[]>([]);
@@ -19,9 +18,17 @@ const AboutBeta = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4">About the Beta Version</h2>
-      <p>This is a beta version of our application. We appreciate your feedback!</p>
-      <p>This page is currently under development. Please check back later for updates.</p>
-      <p>This page will be used to showcase new features and improvements. And we welcome your suggestions!</p>
+      <p>
+        This is a beta version of our application. We appreciate your feedback!
+      </p>
+      <p>
+        This page is currently under development. Please check back later for
+        updates.
+      </p>
+      <p>
+        This page will be used to showcase new features and improvements. And we
+        welcome your suggestions!
+      </p>
       <p>~The ForexPencil Team</p>
       <div className="space-y-4">
         {aboutInfo.map((info) => (
