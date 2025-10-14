@@ -5,13 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { addFeedback, getFeedback } from '@/lib/db/beta';
 import { toast } from '@/lib/hooks/use-toast';
-import { Feedback } from '@/lib/db/beta';
+import { FeedbackData } from '@/lib/db/beta';
 
 const Feedback = () => {
   const { user } = useAuth();
   const [feedback, setFeedback] = useState('');
   const [featureRequest, setFeatureRequest] = useState('');
-  const [previousFeedback, setPreviousFeedback] = useState<Feedback[]>([]);
+  const [previousFeedback, setPreviousFeedback] = useState<FeedbackData[]>([]);
 
   useEffect(() => {
     const fetchFeedback = async () => {

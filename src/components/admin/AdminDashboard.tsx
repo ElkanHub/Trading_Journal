@@ -10,7 +10,7 @@
   
   import { Label } from "@/components/ui/label";
   import ReplyForm from './ReplyForm';
-  import { Feedback } from '@/lib/db/beta';
+  import { FeedbackData } from '@/lib/db/beta';
   
   // In a real app, this should be stored in a secure way, not hardcoded
   const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_UID; // Replace with your actual admin UID
@@ -19,7 +19,7 @@
     const { user } = useAuth();
     const { dbType, setDbType } = useDatabase();
     const adminService = useAdminService();
-    const [feedback, setFeedback] = useState<Feedback[]>([]);
+    const [feedback, setFeedback] = useState<FeedbackData[]>([]);
     const [aboutTitle, setAboutTitle] = useState('');
     const [aboutContent, setAboutContent] = useState('');
   

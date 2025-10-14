@@ -9,7 +9,7 @@ export interface Reply {
   createdAt: Date;
 }
 
-export interface Feedback {
+export interface FeedbackData {
   id: string;
   userId: string;
   feedback: string;
@@ -65,7 +65,7 @@ export const firestoreBetaService = {
     }
   },
 
-  async addFeedback(feedback: Omit<Feedback, 'id'>) {
+  async addFeedback(feedback: Omit<FeedbackData, 'id'>) {
     try {
       const feedbackCol = collection(firestoreDb, "feedback");
       await addDoc(feedbackCol, cleanupObject(feedback));
@@ -75,7 +75,7 @@ export const firestoreBetaService = {
     }
   },
 
-  async getFeedback(userId: string): Promise<Feedback[]> {
+  async getFeedback(userId: string): Promise<FeedbackData[]> {
     try {
       const feedbackCol = collection(firestoreDb, "feedback");
       const q =
@@ -85,7 +85,7 @@ export const firestoreBetaService = {
       const feedbackSnapshot = await getDocs(q);
 
       const feedbackList = await Promise.all(feedbackSnapshot.docs.map(async (doc) => {
-        const feedbackData = doc.data() as Omit<Feedback, 'id' | 'replies'>;
+        const feedbackData = doc.data() as Omit<FeedbackData, 'id' | 'replies'>;
         const repliesCol = collection(firestoreDb, "feedback_replies");
         const repliesQuery = query(repliesCol, where("feedbackId", "==", doc.id));
         const repliesSnapshot = await getDocs(repliesQuery);
@@ -145,7 +145,7 @@ export const realtimeBetaService = {
     }
   },
 
-  async addFeedback(feedback: Omit<Feedback, 'id'>) {
+  async addFeedback(feedback: Omit<FeedbackData, 'id'>) {
     try {
       const feedbackRef = ref(realtimeDb!, "feedback");
       const newFeedbackRef = push(feedbackRef);
@@ -156,15 +156,15 @@ export const realtimeBetaService = {
     }
   },
 
-  async getFeedback(userId: string): Promise<Feedback[]> {
+  async getFeedback(userId: string): Promise<FeedbackData[]> {
     try {
       const feedbackRef = ref(realtimeDb!, "feedback");
       const snapshot = await get(feedbackRef);
       if (snapshot.exists()) {
         const data = snapshot.val();
-        let feedbackList: Feedback[] = Object.keys(data).map((key) => ({
+        let feedbackList: FeedbackData[] = Object.keys(data).map((key) => ({
           id: key,
-          ...(data[key] as Omit<Feedback, 'id'>),
+          ...(data[key] as Omit<FeedbackData, 'id'>),
         }));
 
         const repliesRef = ref(realtimeDb!, "feedback_replies");
