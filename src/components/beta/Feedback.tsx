@@ -5,12 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { addFeedback, getFeedback } from '@/lib/db/beta';
 import { toast } from '@/lib/hooks/use-toast';
+import { Feedback } from '@/lib/db/beta';
 
 const Feedback = () => {
   const { user } = useAuth();
   const [feedback, setFeedback] = useState('');
   const [featureRequest, setFeatureRequest] = useState('');
-  const [previousFeedback, setPreviousFeedback] = useState<any[]>([]);
+  const [previousFeedback, setPreviousFeedback] = useState<Feedback[]>([]);
 
   useEffect(() => {
     const fetchFeedback = async () => {
@@ -89,7 +90,7 @@ const Feedback = () => {
                 {fb.replies && fb.replies.length > 0 && (
                   <div className="mt-4 space-y-2">
                     <h4 className="font-semibold">Replies:</h4>
-                    {fb.replies.map((reply: any, index: number) => (
+                    {fb.replies.map((reply, index: number) => (
                       <div key={index} className="border-l-2 border-primary pl-2">
                         <p className="text-sm text-muted-foreground">{reply.reply}</p>
                         <p className="text-xs text-gray-500">{new Date(reply.createdAt).toLocaleString()}</p>

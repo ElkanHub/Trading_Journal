@@ -3,6 +3,29 @@ import { firestoreDb, realtimeDb } from "@/lib/firebase";
 import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
 import { ref, push, get, update } from "firebase/database";
 
+export interface Reply {
+  feedbackId: string;
+  reply: string;
+  createdAt: Date;
+}
+
+export interface Feedback {
+  id: string;
+  userId: string;
+  feedback: string;
+  featureRequest?: string;
+  createdAt: Date;
+  replies?: Reply[];
+}
+
+export interface AboutInfo {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: Date;
+  isNew: boolean;
+}
+
 // Utility to remove null or undefined fields
 const cleanupObject = (obj: any) => {
   const newObj: any = {};
@@ -18,13 +41,13 @@ const cleanupObject = (obj: any) => {
 // ─── FIRESTORE IMPLEMENTATION ───────────────────────────────────────────────
 //
 export const firestoreBetaService = {
-  async getAboutInfo() {
+  async getAboutInfo(): Promise<AboutInfo[]> {
     try {
       const aboutCol = collection(firestoreDb, "beta_about");
       const aboutSnapshot = await getDocs(aboutCol);
       return aboutSnapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data(),
+        ...(doc.data() as Omit<AboutInfo, 'id'>),
       }));
     } catch (error) {
       console.error("Error fetching About Info (Firestore):", error);
@@ -32,7 +55,7 @@ export const firestoreBetaService = {
     }
   },
 
-  async addAboutInfo(info: any) {
+  async addAboutInfo(info: Omit<AboutInfo, 'id'>) {
     try {
       const aboutCol = collection(firestoreDb, "beta_about");
       await addDoc(aboutCol, cleanupObject(info));
@@ -42,7 +65,7 @@ export const firestoreBetaService = {
     }
   },
 
-  async addFeedback(feedback: any) {
+  async addFeedback(feedback: Omit<Feedback, 'id'>) {
     try {
       const feedbackCol = collection(firestoreDb, "feedback");
       await addDoc(feedbackCol, cleanupObject(feedback));
@@ -52,7 +75,7 @@ export const firestoreBetaService = {
     }
   },
 
-  async getFeedback(userId: string) {
+  async getFeedback(userId: string): Promise<Feedback[]> {
     try {
       const feedbackCol = collection(firestoreDb, "feedback");
       const q =
@@ -62,11 +85,11 @@ export const firestoreBetaService = {
       const feedbackSnapshot = await getDocs(q);
 
       const feedbackList = await Promise.all(feedbackSnapshot.docs.map(async (doc) => {
-        const feedbackData = doc.data();
+        const feedbackData = doc.data() as Omit<Feedback, 'id' | 'replies'>;
         const repliesCol = collection(firestoreDb, "feedback_replies");
         const repliesQuery = query(repliesCol, where("feedbackId", "==", doc.id));
         const repliesSnapshot = await getDocs(repliesQuery);
-        const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data());
+        const replies = repliesSnapshot.docs.map(replyDoc => replyDoc.data() as Reply);
         return {
           id: doc.id,
           ...feedbackData,
@@ -81,7 +104,7 @@ export const firestoreBetaService = {
     }
   },
 
-  async addFeedbackReply(reply: any) {
+  async addFeedbackReply(reply: Reply) {
     try {
       const replyCol = collection(firestoreDb, "feedback_replies");
       await addDoc(replyCol, cleanupObject(reply));
@@ -96,13 +119,13 @@ export const firestoreBetaService = {
 // ─── REALTIME DATABASE IMPLEMENTATION ─────────────────────────────────────────
 //
 export const realtimeBetaService = {
-  async getAboutInfo() {
+  async getAboutInfo(): Promise<AboutInfo[]> {
     try {
       const aboutRef = ref(realtimeDb!, "beta_about");
       const snapshot = await get(aboutRef);
       if (snapshot.exists()) {
         const data = snapshot.val();
-        return Object.keys(data).map((key) => ({ id: key, ...data[key] }));
+        return Object.keys(data).map((key) => ({ id: key, ...(data[key] as Omit<AboutInfo, 'id'>) }));
       }
       return [];
     } catch (error) {
@@ -111,7 +134,7 @@ export const realtimeBetaService = {
     }
   },
 
-  async addAboutInfo(info: any) {
+  async addAboutInfo(info: Omit<AboutInfo, 'id'>) {
     try {
       const aboutRef = ref(realtimeDb!, "beta_about");
       const newAboutRef = push(aboutRef);
@@ -122,7 +145,7 @@ export const realtimeBetaService = {
     }
   },
 
-  async addFeedback(feedback: any) {
+  async addFeedback(feedback: Omit<Feedback, 'id'>) {
     try {
       const feedbackRef = ref(realtimeDb!, "feedback");
       const newFeedbackRef = push(feedbackRef);
@@ -133,26 +156,27 @@ export const realtimeBetaService = {
     }
   },
 
-  async getFeedback(userId: string) {
+  async getFeedback(userId: string): Promise<Feedback[]> {
     try {
       const feedbackRef = ref(realtimeDb!, "feedback");
       const snapshot = await get(feedbackRef);
       if (snapshot.exists()) {
         const data = snapshot.val();
-        let feedbackList = Object.keys(data).map((key) => ({
+        let feedbackList: Feedback[] = Object.keys(data).map((key) => ({
           id: key,
-          ...data[key],
+          ...(data[key] as Omit<Feedback, 'id'>),
         }));
 
         const repliesRef = ref(realtimeDb!, "feedback_replies");
         const repliesSnapshot = await get(repliesRef);
         if (repliesSnapshot.exists()) {
           const repliesData = repliesSnapshot.val();
-          const repliesByFeedbackId = Object.values(repliesData).reduce((acc: any, reply: any) => {
-            if (!acc[reply.feedbackId]) {
-              acc[reply.feedbackId] = [];
+          const repliesByFeedbackId: {[key: string]: Reply[]} = Object.values(repliesData).reduce((acc: {[key: string]: Reply[]}, reply: any) => {
+            const r = reply as Reply;
+            if (!acc[r.feedbackId]) {
+              acc[r.feedbackId] = [];
             }
-            acc[reply.feedbackId].push(reply);
+            acc[r.feedbackId].push(r);
             return acc;
           }, {});
 
@@ -172,7 +196,7 @@ export const realtimeBetaService = {
     }
   },
 
-  async addFeedbackReply(reply: any) {
+  async addFeedbackReply(reply: Reply) {
     try {
       const replyRef = ref(realtimeDb!, "feedback_replies");
       const newReplyRef = push(replyRef);

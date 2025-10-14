@@ -10,6 +10,7 @@
   
   import { Label } from "@/components/ui/label";
   import ReplyForm from './ReplyForm';
+  import { Feedback } from '@/lib/db/beta';
   
   // In a real app, this should be stored in a secure way, not hardcoded
   const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_UID; // Replace with your actual admin UID
@@ -18,7 +19,7 @@
     const { user } = useAuth();
     const { dbType, setDbType } = useDatabase();
     const adminService = useAdminService();
-    const [feedback, setFeedback] = useState<any[]>([]);
+    const [feedback, setFeedback] = useState<Feedback[]>([]);
     const [aboutTitle, setAboutTitle] = useState('');
     const [aboutContent, setAboutContent] = useState('');
   
@@ -90,7 +91,7 @@
                   {fb.replies && fb.replies.length > 0 && (
                     <div className="mt-4 space-y-2">
                       <h4 className="font-semibold">Replies:</h4>
-                      {fb.replies.map((reply: any, index: number) => (
+                      {fb.replies.map((reply, index: number) => (
                         <div key={index} className="border-l-2 border-primary pl-2">
                           <p className="text-sm text-muted-foreground">{reply.reply}</p>
                           <p className="text-xs text-gray-500">{new Date(reply.createdAt).toLocaleString()}</p>
