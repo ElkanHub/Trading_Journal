@@ -31,6 +31,11 @@ const Feedback = () => {
       return;
     }
 
+    if (!feedback.trim() && !featureRequest.trim()) {
+      toast({ title: 'Error', description: 'Feedback or feature request cannot be empty.' });
+      return;
+    }
+
     try {
       await addFeedback({
         userId: user.uid,
@@ -45,6 +50,7 @@ const Feedback = () => {
       const feedbackList = await getFeedback(user.uid);
       setPreviousFeedback(feedbackList);
     } catch (error) {
+      console.error("Error submitting feedback:", error);
       toast({ title: 'Error', description: 'Something went wrong. Please try again.' });
     }
   };

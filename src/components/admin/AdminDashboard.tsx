@@ -50,17 +50,37 @@
       }
     };
   
-    const handleAddAbout = async (e: React.FormEvent) => {
-      e.preventDefault();
-      try {
-        await adminService.addAboutInfo({ title: aboutTitle, content: aboutContent, createdAt: new Date(), isNew: true });
-        toast({ title: 'Success', description: 'About info added successfully!' });
-        setAboutTitle('');
-        setAboutContent('');
-      } catch (error) {
-        toast({ title: 'Error', description: 'Something went wrong. Please try again.' });
-      }
-    };
+
+  
+  const handleAddAbout = async (e: React.FormEvent) => {
+  
+    e.preventDefault();
+  
+    if (!aboutTitle.trim() || !aboutContent.trim()) {
+  
+      toast({ title: 'Error', description: 'Title and content cannot be empty.' });
+  
+      return;
+  
+    }
+  
+    try {
+  
+      await adminService.addAboutInfo({ title: aboutTitle, content: aboutContent, createdAt: new Date(), isNew: true });
+  
+      toast({ title: 'Success', description: 'About info added successfully!' });
+  
+      setAboutTitle('');
+  
+      setAboutContent('');
+  
+    } catch (error) {
+  
+      toast({ title: 'Error', description: 'Something went wrong. Please try again.' });
+  
+    }
+  
+  };
   
     if (!user || user.uid !== ADMIN_UID) {
       return <div>You are not authorized to view this page.</div>;
