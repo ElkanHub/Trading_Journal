@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { motion } from 'framer-motion';
+import { RippleButton } from '@/components/ui/RippleButton';
 
 interface HeroSectionProps {
   onStartJournaling: () => void;
@@ -35,7 +36,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartJournaling, onL
             transition={{ duration: 0.5 }}
             className="text-4xl sm:text-6xl font-bold text-white mb-6"
           >
-            Master Your Trading <span className="animated-gradient">Psychology</span>
+            Master Your Trading <span className="static-gradient">Psychology</span>
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: 20 }}
@@ -53,33 +54,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartJournaling, onL
           >
             {user ? (
               <>
-                <button 
-                  onClick={onStartJournaling}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
-                >
+                <RippleButton onClick={onStartJournaling}>
                   Go to Dashboard
-                </button>
-                <button 
-                  onClick={() => signOut()}
-                  className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
-                >
+                </RippleButton>
+                <RippleButton onClick={() => signOut()} variant="secondary">
                   Logout
-                </button>
+                </RippleButton>
               </>
             ) : (
               <>
-                <button 
-                  onClick={onStartJournaling}
-                  className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
-                >
+                <RippleButton onClick={onStartJournaling}>
                   Start Journaling Now
-                </button>
-                <button 
-                  onClick={onLogin}
-                  className="bg-slate-700 hover:bg-slate-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg"
-                >
+                </RippleButton>
+                <RippleButton onClick={onLogin} variant="secondary">
                   Login
-                </button>
+                </RippleButton>
               </>
             )}
           </motion.div>
