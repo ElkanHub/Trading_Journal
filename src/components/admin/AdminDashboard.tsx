@@ -256,60 +256,119 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {isModalOpen && editingAbout && (
-        <Modal onClose={() => setIsModalOpen(false)}>
-          <form onSubmit={handleUpdateAbout} className="space-y-4">
-            <h2 className="text-2xl font-bold mb-4">Edit About Info</h2>
-            <div>
-              <label
-                htmlFor="editAboutTitle"
-                className="block text-sm font-medium text-muted-foreground"
+            {editingAbout && (
+
+              <Modal
+
+                isOpen={isModalOpen}
+
+                onClose={() => setIsModalOpen(false)}
+
+                title="Edit About Info"
+
               >
-                Title
-              </label>
-              <input
-                id="editAboutTitle"
-                type="text"
-                className="mt-1 block w-full border border-input rounded-md shadow-sm p-2"
-                value={editingAbout.title}
-                onChange={(e) =>
-                  setEditingAbout({ ...editingAbout, title: e.target.value })
-                }
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="editAboutContent"
-                className="block text-sm font-medium text-muted-foreground"
-              >
-                Content
-              </label>
-              <textarea
-                id="editAboutContent"
-                rows={4}
-                className="mt-1 block w-full border border-input rounded-md shadow-sm p-2"
-                value={editingAbout.content}
-                onChange={(e) =>
-                  setEditingAbout({
-                    ...editingAbout,
-                    content: e.target.value,
-                  })
-                }
-              ></textarea>
-            </div>
-            <div className="flex justify-end space-x-2">
-              <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setIsModalOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button type="submit">Save Changes</Button>
-            </div>
-          </form>
-        </Modal>
-      )}
+
+                <form onSubmit={handleUpdateAbout} className="space-y-4">
+
+                  <div>
+
+                    <label
+
+                      htmlFor="editAboutTitle"
+
+                      className="block text-sm font-medium text-muted-foreground"
+
+                    >
+
+                      Title
+
+                    </label>
+
+                    <input
+
+                      id="editAboutTitle"
+
+                      type="text"
+
+                      className="mt-1 block w-full border border-input rounded-md shadow-sm p-2"
+
+                      value={editingAbout.title}
+
+                      onChange={(e) =>
+
+                        setEditingAbout({ ...editingAbout, title: e.target.value })
+
+                      }
+
+                    />
+
+                  </div>
+
+                  <div>
+
+                    <label
+
+                      htmlFor="editAboutContent"
+
+                      className="block text-sm font-medium text-muted-foreground"
+
+                    >
+
+                      Content
+
+                    </label>
+
+                    <textarea
+
+                      id="editAboutContent"
+
+                      rows={4}
+
+                      className="mt-1 block w-full border border-input rounded-md shadow-sm p-2"
+
+                      value={editingAbout.content}
+
+                      onChange={(e) =>
+
+                        setEditingAbout({
+
+                          ...editingAbout,
+
+                          content: e.target.value,
+
+                        })
+
+                      }
+
+                    ></textarea>
+
+                  </div>
+
+                  <div className="flex justify-end space-x-2">
+
+                    <Button
+
+                      type="button"
+
+                      variant="ghost"
+
+                      onClick={() => setIsModalOpen(false)}
+
+                    >
+
+                      Cancel
+
+                    </Button>
+
+                    <Button type="submit">Save Changes</Button>
+
+                  </div>
+
+                </form>
+
+              </Modal>
+
+            )}
     </div>
   );
 };
