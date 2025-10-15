@@ -153,7 +153,13 @@ const AdminDashboard = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <div className="mr-2 md:m-0 flex items-center">
+        <Link href="/dashboard">
+          <h1 className="text-2xl font-bold text-foreground">
+            Admin<span className="text-emerald-400">Dashboard</span>
+          </h1>
+        </Link>
+      </div>
         <div className="flex items-center space-x-2">
           <ThemeSwitcher />
           <Label htmlFor="db-switch">Use Firestore</Label>
