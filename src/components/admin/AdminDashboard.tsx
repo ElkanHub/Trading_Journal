@@ -1,5 +1,4 @@
-
-  "use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { useAuth } from "@/lib/hooks/useAuth";
@@ -11,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import ReplyForm from "./ReplyForm";
 import { FeedbackData, AboutInfo } from "@/lib/db/beta";
 import { Button } from "@/components/ui/button";
-import Modal from "@/components/Modal";
+import { Modal } from "@/components/Modal";
 
 // In a real app, this should be stored in a secure way, not hardcoded
 const ADMIN_UID = process.env.NEXT_PUBLIC_ADMIN_UID; // Replace with your actual admin UID
@@ -85,7 +84,10 @@ const AdminDashboard = () => {
         createdAt: new Date(),
         isNew: true,
       });
-      toast({ title: "Success", description: "About info added successfully!" });
+      toast({
+        title: "Success",
+        description: "About info added successfully!",
+      });
       setAboutTitle("");
       setAboutContent("");
       fetchAboutInfo();
@@ -296,7 +298,11 @@ const AdminDashboard = () => {
               ></textarea>
             </div>
             <div className="flex justify-end space-x-2">
-              <Button type="button" variant="ghost" onClick={() => setIsModalOpen(false)}>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => setIsModalOpen(false)}
+              >
                 Cancel
               </Button>
               <Button type="submit">Save Changes</Button>
@@ -309,5 +315,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-
-  
