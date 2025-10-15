@@ -27,7 +27,6 @@ const AdminDashboard = () => {
   const [aboutContent, setAboutContent] = useState("");
   const [editingAbout, setEditingAbout] = useState<AboutInfo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [clearedFeedback, setClearedFeedback] = useState<string[]>([]);
 
   const handleDbSwitch = (isFirestore: boolean) => {
     setDbType(isFirestore ? "firestore" : "realtime");
@@ -38,14 +37,14 @@ const AdminDashboard = () => {
     setAboutInfo(info);
   };
 
-  useEffect(() => {
-    const fetchFeedback = async () => {
-      if (user && user.uid === ADMIN_UID) {
-        const feedbackList = await adminService.getFeedback("all"); // 'all' to fetch all feedback
-        setFeedback(feedbackList);
-      }
-    };
+  const fetchFeedback = async () => {
+    if (user && user.uid === ADMIN_UID) {
+      const feedbackList = await adminService.getFeedback("all"); // 'all' to fetch all feedback
+      setFeedback(feedbackList.filter(fb => fb.status !== 'cleared'));
+    }
+  };
 
+  useEffect(() => {
     if (user && user.uid === ADMIN_UID) {
       fetchFeedback();
       fetchAboutInfo();
@@ -61,8 +60,7 @@ const AdminDashboard = () => {
       });
       toast({ title: "Success", description: "Reply sent successfully!" });
       // Refresh feedback list to show the reply
-      const feedbackList = await adminService.getFeedback("all");
-      setFeedback(feedbackList);
+      fetchFeedback();
     } catch (error) {
       toast({
         title: "Error",
@@ -144,15 +142,22 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleClearFeedback = (feedbackId: string) => {
-    setClearedFeedback([...clearedFeedback, feedbackId]);
+  const handleClearFeedback = async (feedbackId: string) => {
+    try {
+      await adminService.updateFeedbackStatus(feedbackId, 'cleared');
+      toast({ title: "Success", description: "Feedback cleared successfully!" });
+      fetchFeedback();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+      });
+    }
   };
 
   if (!user || user.uid !== ADMIN_UID) {
     return <div>You are not authorized to view this page.</div>;
   }
-
-  const visibleFeedback = feedback.filter((fb) => !clearedFeedback.includes(fb.id));
 
   return (
     <div className="container mx-auto p-4">
@@ -178,7 +183,7 @@ const AdminDashboard = () => {
         <div>
           <h2 className="text-2xl font-bold mb-4">User Feedback</h2>
           <div className="space-y-4">
-            {visibleFeedback.map((fb) => {
+            {feedback.map((fb) => {
               const lastReply = fb.replies?.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
               return (
                 <div key={fb.id} className="border p-4 rounded-lg shadow-sm">

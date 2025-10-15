@@ -102,6 +102,16 @@ export const firestoreAdminService = {
       throw error;
     }
   },
+
+  async updateFeedbackStatus(feedbackId: string, status: 'open' | 'cleared'): Promise<void> {
+    try {
+      const feedbackDoc = doc(firestoreDb, "feedback", feedbackId);
+      await updateDoc(feedbackDoc, { status });
+    } catch (error) {
+      console.error("Error updating feedback status (Firestore):", error);
+      throw error;
+    }
+  },
 };
 
 //
@@ -188,6 +198,16 @@ export const realtimeDbAdminService = {
       await update(infoRef, cleanupObject(updates));
     } catch (error) {
       console.error("Error updating About Info (Realtime DB):", error);
+      throw error;
+    }
+  },
+
+  async updateFeedbackStatus(feedbackId: string, status: 'open' | 'cleared'): Promise<void> {
+    try {
+      const feedbackRef = ref(realtimeDb!, `feedback/${feedbackId}`);
+      await update(feedbackRef, { status });
+    } catch (error) {
+      console.error("Error updating feedback status (Realtime DB):", error);
       throw error;
     }
   },

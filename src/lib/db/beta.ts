@@ -17,6 +17,7 @@ export interface FeedbackData {
   featureRequest?: string;
   createdAt: Date;
   replies?: Reply[];
+  status?: 'open' | 'cleared';
 }
 
 export interface AboutInfo {
