@@ -39,7 +39,7 @@ const Feedback = () => {
     try {
       await addFeedback({
         userId: user.uid,
-        userEmail: user.email,
+        userEmail: user.email ?? "email not provided",
         feedback,
         featureRequest,
         createdAt: new Date(),
