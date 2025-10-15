@@ -12,6 +12,7 @@ export interface Reply {
 export interface FeedbackData {
   id: string;
   userId: string;
+  userEmail?: string;
   feedback: string;
   featureRequest?: string;
   createdAt: Date;

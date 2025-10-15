@@ -27,6 +27,7 @@ const AdminDashboard = () => {
   const [aboutContent, setAboutContent] = useState("");
   const [editingAbout, setEditingAbout] = useState<AboutInfo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [clearedFeedback, setClearedFeedback] = useState<string[]>([]);
 
   const handleDbSwitch = (isFirestore: boolean) => {
     setDbType(isFirestore ? "firestore" : "realtime");
@@ -86,10 +87,7 @@ const AdminDashboard = () => {
         createdAt: new Date(),
         isNew: true,
       });
-      toast({
-        title: "Success",
-        description: "About info added successfully!",
-      });
+      toast({ title: "Success", description: "About info added successfully!" });
       setAboutTitle("");
       setAboutContent("");
       fetchAboutInfo();
@@ -146,9 +144,15 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleClearFeedback = (feedbackId: string) => {
+    setClearedFeedback([...clearedFeedback, feedbackId]);
+  };
+
   if (!user || user.uid !== ADMIN_UID) {
     return <div>You are not authorized to view this page.</div>;
   }
+
+  const visibleFeedback = feedback.filter((fb) => !clearedFeedback.includes(fb.id));
 
   return (
     <div className="container mx-auto p-4">
@@ -174,35 +178,48 @@ const AdminDashboard = () => {
         <div>
           <h2 className="text-2xl font-bold mb-4">User Feedback</h2>
           <div className="space-y-4">
-            {feedback.map((fb) => (
-              <div key={fb.id} className="border p-4 rounded-lg shadow-sm">
-                <p className="text-muted-foreground">{fb.feedback}</p>
-                {fb.featureRequest && (
-                  <p className="text-muted-foreground mt-2">
-                    <strong>Feature Request:</strong> {fb.featureRequest}
-                  </p>
-                )}
-                <ReplyForm feedbackId={fb.id} onReply={handleReply} />
-                {fb.replies && fb.replies.length > 0 && (
-                  <div className="mt-4 space-y-2">
-                    <h4 className="font-semibold">Replies:</h4>
-                    {fb.replies.map((reply, index: number) => (
-                      <div
-                        key={index}
-                        className="border-l-2 border-primary pl-2"
-                      >
-                        <p className="text-sm text-muted-foreground">
-                          {reply.reply}
+            {visibleFeedback.map((fb) => {
+              const lastReply = fb.replies?.slice().sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+              return (
+                <div key={fb.id} className="border p-4 rounded-lg shadow-sm">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <p className="text-muted-foreground font-semibold">{fb.userEmail || fb.userId}</p>
+                      <p className="text-muted-foreground">{fb.feedback}</p>
+                      {fb.featureRequest && (
+                        <p className="text-muted-foreground mt-2">
+                          <strong>Feature Request:</strong> {fb.featureRequest}
                         </p>
-                        <p className="text-xs text-gray-500">
-                          {new Date(reply.createdAt).toLocaleString()}
-                        </p>
-                      </div>
-                    ))}
+                      )}
+                    </div>
+                    <Button variant="ghost" size="sm" onClick={() => handleClearFeedback(fb.id)}>Clear</Button>
                   </div>
-                )}
-              </div>
-            ))}
+                  <div className="text-xs text-gray-500 mt-2">
+                    <p>Replies: {fb.replies?.length || 0}</p>
+                    {lastReply && <p>Last reply: {new Date(lastReply.createdAt).toLocaleString()}</p>}
+                  </div>
+                  <ReplyForm feedbackId={fb.id} onReply={handleReply} />
+                  {fb.replies && fb.replies.length > 0 && (
+                    <div className="mt-4 space-y-2">
+                      <h4 className="font-semibold">Replies:</h4>
+                      {fb.replies.map((reply, index: number) => (
+                        <div
+                          key={index}
+                          className="border-l-2 border-primary pl-2"
+                        >
+                          <p className="text-sm text-muted-foreground">
+                            {reply.reply}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {new Date(reply.createdAt).toLocaleString()}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
         <div>
