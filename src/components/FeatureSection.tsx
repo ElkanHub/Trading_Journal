@@ -50,7 +50,7 @@ export const FeatureSection: React.FC = () => {
           {features.map((feature, index) => (
             <div 
               key={index}
-              className="bg-slate-800 border border-slate-700 rounded-lg p-6 hover:border-emerald-600 transition-colors"
+              className="bg-slate-800 border border-slate-700 rounded-lg p-6 hover:border-emerald-600 transition-all duration-300 ease-in-out hover:scale-105 transform"
             >
               <div className="text-4xl mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold text-white mb-2">{feature.title}</h3>

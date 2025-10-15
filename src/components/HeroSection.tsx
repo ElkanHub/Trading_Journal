@@ -4,6 +4,7 @@ import React from 'react';
 import { useAuth } from '@/lib/hooks/useAuth';
 import { useSignOut } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
+import { motion } from 'framer-motion';
 
 interface HeroSectionProps {
   onStartJournaling: () => void;
@@ -28,13 +29,28 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartJournaling, onL
       
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
         <div className="text-center">
-          <h1 className="text-4xl sm:text-6xl font-bold text-white mb-6">
-            Master Your Trading <span className="text-emerald-400">Psychology</span>
-          </h1>
-          <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-4xl sm:text-6xl font-bold text-white mb-6"
+          >
+            Master Your Trading <span className="animated-gradient">Psychology</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto"
+          >
             Track every trade, analyze your performance, and transform your trading from guesswork into a data-driven business.
-          </p>
-          <div className="flex justify-center space-x-4">
+          </motion.p>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="flex justify-center space-x-4"
+          >
             {user ? (
               <>
                 <button 
@@ -66,7 +82,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onStartJournaling, onL
                 </button>
               </>
             )}
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

@@ -51,3 +51,17 @@
 .read-the-docs {
   color: #5f7676;
 }
+
+.animated-gradient {
+  background: linear-gradient(to right, #34d399, #6ee7b7, #a7f3d0, #34d399);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-animation 3s linear infinite;
+}
+
+@keyframes gradient-animation {
+  to {
+    background-position: 200% center;
+  }
+}
