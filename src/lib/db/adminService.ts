@@ -1,7 +1,17 @@
 // src/lib/db/adminService.ts
 import { firestoreDb, realtimeDb } from "../firebase";
-import { collection, getDocs, addDoc, query, where } from "firebase/firestore";
-import { ref, push, get, update } from "firebase/database";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  query,
+  where,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { ref, push, get, update, remove } from "firebase/database";
+import { AboutInfo } from "./beta";
 
 // Utility: remove null or undefined values
 const cleanupObject = (obj: any) => {
@@ -46,12 +56,49 @@ export const firestoreAdminService = {
     }
   },
 
+  async getAboutInfo(): Promise<AboutInfo[]> {
+    try {
+      const aboutCol = collection(firestoreDb, "beta_about");
+      const aboutSnapshot = await getDocs(aboutCol);
+      return aboutSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...(doc.data() as Omit<AboutInfo, "id">),
+      }));
+    } catch (error) {
+      console.error("Error fetching About Info (Firestore):", error);
+      throw error;
+    }
+  },
+
   async addAboutInfo(info: any) {
     try {
       const aboutCol = collection(firestoreDb, "beta_about");
       await addDoc(aboutCol, cleanupObject(info));
     } catch (error) {
       console.error("Error adding About Info (Firestore):", error);
+      throw error;
+    }
+  },
+
+  async deleteAboutInfo(infoId: string): Promise<void> {
+    try {
+      const infoDoc = doc(firestoreDb, "beta_about", infoId);
+      await deleteDoc(infoDoc);
+    } catch (error) {
+      console.error("Error deleting About Info (Firestore):", error);
+      throw error;
+    }
+  },
+
+  async updateAboutInfo(
+    infoId: string,
+    updates: Partial<AboutInfo>
+  ): Promise<void> {
+    try {
+      const infoDoc = doc(firestoreDb, "beta_about", infoId);
+      await updateDoc(infoDoc, cleanupObject(updates));
+    } catch (error) {
+      console.error("Error updating About Info (Firestore):", error);
       throw error;
     }
   },
@@ -93,6 +140,24 @@ export const realtimeDbAdminService = {
     }
   },
 
+  async getAboutInfo(): Promise<AboutInfo[]> {
+    try {
+      const aboutRef = ref(realtimeDb!, "beta_about");
+      const snapshot = await get(aboutRef);
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+        return Object.keys(data).map((key) => ({
+          id: key,
+          ...(data[key] as Omit<AboutInfo, "id">),
+        }));
+      }
+      return [];
+    } catch (error) {
+      console.error("Error fetching About Info (Realtime DB):", error);
+      throw error;
+    }
+  },
+
   async addAboutInfo(info: any) {
     try {
       const aboutRef = ref(realtimeDb!, "beta_about");
@@ -100,6 +165,29 @@ export const realtimeDbAdminService = {
       await update(newAboutRef, cleanupObject(info));
     } catch (error) {
       console.error("Error adding About Info (Realtime DB):", error);
+      throw error;
+    }
+  },
+
+  async deleteAboutInfo(infoId: string): Promise<void> {
+    try {
+      const infoRef = ref(realtimeDb!, `beta_about/${infoId}`);
+      await remove(infoRef);
+    } catch (error) {
+      console.error("Error deleting About Info (Realtime DB):", error);
+      throw error;
+    }
+  },
+
+  async updateAboutInfo(
+    infoId: string,
+    updates: Partial<AboutInfo>
+  ): Promise<void> {
+    try {
+      const infoRef = ref(realtimeDb!, `beta_about/${infoId}`);
+      await update(infoRef, cleanupObject(updates));
+    } catch (error) {
+      console.error("Error updating About Info (Realtime DB):", error);
       throw error;
     }
   },
