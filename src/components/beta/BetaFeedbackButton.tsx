@@ -21,7 +21,7 @@ const BetaFeedbackButton = () => {
   return (
     <Link href="/beta" passHref>
       <motion.div
-        className="fixed bottom-5 right-5 bg-primary text-primary-foreground p-3 rounded-full shadow-lg cursor-pointer"
+        className="fixed z-100 bottom-5 right-5 bg-primary text-primary-foreground p-3 rounded-full shadow-lg cursor-pointer"
         // Add animation here when framer-motion is installed
         whileHover={{ scale: 1.1 }}
         transition={{ type: "spring", stiffness: 300 }}
