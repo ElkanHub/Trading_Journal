@@ -24,7 +24,7 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Progress } from "@/components/ui/progress";
 import { useAuth } from "@/lib/hooks/useAuth";
-import { realtimeDb as database} from "@/lib/firebase";
+import { realtimeDb as database } from "@/lib/firebase";
 import { ref, set } from "firebase/database";
 import { cn } from "@/lib/utils";
 
@@ -174,7 +174,7 @@ const WelcomeScreen = ({ onComplete }: { onComplete: () => void }) => (
     <div className="relative z-10 flex flex-col items-center justify-center space-y-8">
       <h1 className="text-6xl md:text-7xl font-bold tracking-tight text-white">
         Welcome to{" "}
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300">
           ForexPencil
         </span>
       </h1>
@@ -188,7 +188,7 @@ const WelcomeScreen = ({ onComplete }: { onComplete: () => void }) => (
       <Button
         onClick={onComplete}
         size="lg"
-        className="mt-8 px-10 py-6 text-xl font-medium bg-white text-slate-900 hover:bg-white/90 transition-all duration-300 shadow-xl hover:shadow-2xl"
+        className="mt-8 px-10 py-6 text-xl font-medium bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-300 shadow-xl hover:shadow-2xl"
       >
         Let's Start
         <ChevronRight className="ml-2 h-6 w-6" />
@@ -204,15 +204,15 @@ const ThankYouScreen = ({ onComplete }: { onComplete: () => void }) => (
     className="w-full max-w-4xl"
   >
     <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900/90 to-slate-800/90 backdrop-blur-xl border border-white/10 shadow-2xl">
-      <div className="absolute inset-0 bg-gradient-to-br from-sky-500/10 to-transparent opacity-50"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 to-transparent opacity-50"></div>
       <div className="relative p-10 md:p-16">
-        <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-sky-400 to-cyan-300 mb-8">
+        <div className="flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-green-300 mb-8">
           <Bot className="w-10 h-10 text-white" />
         </div>
 
         <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-6">
           Welcome to{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300">
             ForexPencil
           </span>
         </h2>
@@ -227,7 +227,8 @@ const ThankYouScreen = ({ onComplete }: { onComplete: () => void }) => (
             <span className="text-white font-semibold">
               focus and precision
             </span>{" "}
-            beat <span className="text-sky-400/80 italic">hype and noise</span>.
+            beat{" "}
+            <span className="text-emerald-400/80 italic">hype and noise</span>.
             That's why we've stripped everything down to what truly matters —
             tracking your trades, seeing your progress clearly, and helping you
             stay locked in on the goal:{" "}
@@ -249,7 +250,7 @@ const ThankYouScreen = ({ onComplete }: { onComplete: () => void }) => (
               Our team's already working on a few powerful additions —
               personalized chat support, direct connections to your trading
               platform, and our AI analyst,{" "}
-              <span className="text-sky-400 font-semibold">Graphite</span>,
+              <span className="text-emerald-400 font-semibold">Graphite</span>,
               built to help you sharpen your edge without losing focus.
             </p>
 
@@ -258,7 +259,7 @@ const ThankYouScreen = ({ onComplete }: { onComplete: () => void }) => (
               idea:
             </p>
 
-            <p className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-cyan-300 mt-4">
+            <p className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-green-300 mt-4">
               Make trading simpler, smarter, and distraction-free.
             </p>
           </div>
@@ -271,7 +272,7 @@ const ThankYouScreen = ({ onComplete }: { onComplete: () => void }) => (
         <Button
           onClick={onComplete}
           size="lg"
-          className="mt-10 px-8 py-4 text-lg font-medium bg-gradient-to-r from-sky-500 to-cyan-400 hover:from-sky-600 hover:to-cyan-500 text-white transition-all duration-300 shadow-xl hover:shadow-2xl"
+          className="mt-10 px-8 py-4 text-lg text-wrap font-medium bg-gradient-to-r from-emerald-500 to-green-400 hover:from-emerald-600 hover:to-green-500 text-white transition-all duration-300 shadow-xl hover:shadow-2xl"
         >
           Let's build your edge — one focused trade at a time.
           <ChevronRight className="ml-2 h-5 w-5" />
@@ -339,12 +340,12 @@ export default function OnboardingQuestions() {
     <div className="relative flex min-h-screen w-full flex-col items-center justify-center overflow-hidden">
       {/* Animated gradient background */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-sky-950 via-slate-900 to-black"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-950 via-slate-900 to-black"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
         <div className="absolute inset-0">
-          <div className="absolute top-0 -left-4 w-72 h-72 bg-sky-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-          <div className="absolute top-0 -right-4 w-72 h-72 bg-cyan-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
+          <div className="absolute top-0 -left-4 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-green-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-teal-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
         </div>
       </div>
 
@@ -362,7 +363,7 @@ export default function OnboardingQuestions() {
               </span>
               <Progress
                 value={progress}
-                className="w-full h-3 bg-white/10 [&>*]:bg-gradient-to-r [&>*]:from-sky-500 [&>*]:to-cyan-400"
+                className="w-full h-3 bg-white/10 [&>*]:bg-gradient-to-r [&>*]:from-emerald-500 [&>*]:to-green-400"
               />
             </div>
           </motion.div>
@@ -383,10 +384,10 @@ export default function OnboardingQuestions() {
             >
               <div className="mb-8 text-left">
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-sky-400 to-cyan-300">
+                  <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-emerald-400 to-green-300">
                     <currentQuestion.icon className="h-6 w-6 text-white" />
                   </div>
-                  <p className="text-lg font-medium text-sky-400">
+                  <p className="text-lg font-medium text-emerald-400">
                     {currentQuestion.section}
                   </p>
                 </div>
@@ -420,10 +421,10 @@ export default function OnboardingQuestions() {
                         />
                         <Label
                           htmlFor={option}
-                          className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 text-lg text-white/80 transition-all hover:border-sky-500/50 hover:bg-white/10 cursor-pointer [&:has([data-state=checked])]:border-sky-500 [&:has([data-state=checked])]:bg-white/10 [&:has([data-state=checked])]:text-white"
+                          className="flex items-center justify-between rounded-xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 text-lg text-white/80 transition-all hover:border-emerald-500/50 hover:bg-white/10 cursor-pointer [&:has([data-state=checked])]:border-emerald-500 [&:has([data-state=checked])]:bg-white/10 [&:has([data-state=checked])]:text-white"
                         >
                           {option}
-                          <CheckCircle className="h-6 w-6 text-sky-400 opacity-0 transition-opacity [&:has([data-state=checked])_+_&]:opacity-100" />
+                          <CheckCircle className="h-6 w-6 text-emerald-400 opacity-0 transition-opacity [&:has([data-state=checked])_+_&]:opacity-100" />
                         </Label>
                       </motion.div>
                     ))}
@@ -457,7 +458,7 @@ export default function OnboardingQuestions() {
                           className={cn(
                             "w-full justify-start text-lg p-5 border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/10 text-white/80 hover:text-white rounded-xl transition-all",
                             answers[currentQuestion.key]?.includes(option) &&
-                              "border-sky-500 bg-white/10 text-white"
+                              "border-emerald-500 bg-white/10 text-white"
                           )}
                         >
                           {option}
@@ -480,7 +481,7 @@ export default function OnboardingQuestions() {
                       onChange={(e) =>
                         handleAnswer(currentQuestion.key, e.target.value)
                       }
-                      className="h-14 text-xl bg-white/5 backdrop-blur-sm border border-white/10 focus:border-sky-500 focus:ring-sky-500 text-white placeholder:text-white/40 rounded-xl"
+                      className="h-14 text-xl bg-white/5 backdrop-blur-sm border border-white/10 focus:border-emerald-500 focus:ring-emerald-500 text-white placeholder:text-white/40 rounded-xl"
                       autoFocus
                     />
                   </form>
@@ -496,11 +497,11 @@ export default function OnboardingQuestions() {
                       onValueChange={(value) =>
                         handleAnswer(currentQuestion.key, value[0])
                       }
-                      className="[&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-sky-500"
+                      className="[&_[role=slider]]:h-6 [&_[role=slider]]:w-6 [&_[role=slider]]:bg-emerald-500"
                     />
                     <div className="mt-4 flex justify-between text-lg font-semibold text-white">
                       <span>{currentQuestion.min}</span>
-                      <span className="text-2xl text-sky-400">
+                      <span className="text-2xl text-emerald-400">
                         {answers[currentQuestion.key] || 5}
                       </span>
                       <span>{currentQuestion.max}</span>
@@ -515,7 +516,7 @@ export default function OnboardingQuestions() {
                     onClick={handleNext}
                     size="lg"
                     disabled={!answers[currentQuestion.key]}
-                    className="px-8 py-3 text-lg font-medium bg-gradient-to-r from-sky-500 to-cyan-400 hover:from-sky-600 hover:to-cyan-500 text-white transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="px-8 py-3 text-lg font-medium bg-gradient-to-r from-emerald-500 to-green-400 hover:from-emerald-600 hover:to-green-500 text-white transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     OK <ChevronRight className="ml-2 h-5 w-5" />
                   </Button>
