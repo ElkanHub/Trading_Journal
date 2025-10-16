@@ -509,7 +509,7 @@ export default function OnboardingQuestions() {
                 )}
               </div>
 
-              <div className="mt-12 flex items-center justify-end">
+              <div className="mt-13 flex items-center justify-center">
                 {currentQuestion.type !== "multiple-choice" && (
                   <Button
                     onClick={handleNext}
