@@ -385,7 +385,7 @@ export default function OnboardingQuestions() {
                     }
                     className="space-y-3"
                   >
-                    {currentQuestion.options.map((option) => (
+                    {currentQuestion.options?.map((option) => (
                       <motion.div
                         key={option}
                         initial={{ opacity: 0, x: -20 }}
@@ -414,7 +414,7 @@ export default function OnboardingQuestions() {
 
                 {currentQuestion.type === "multiple-choice-multi" && (
                   <div className="space-y-3">
-                    {currentQuestion.options.map((option) => (
+                    {currentQuestion.options?.map((option) => (
                       <motion.div
                         key={option}
                         initial={{ opacity: 0, x: -20 }}
