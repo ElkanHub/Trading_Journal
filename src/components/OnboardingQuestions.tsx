@@ -529,7 +529,7 @@ export default function OnboardingQuestions() {
           )}
         </AnimatePresence>
 
-        <footer className="absolute bottom-0 left-0 w-full p-8">
+        <footer className="absolute bottom-0 left-0 w-[20%] p-8">
           <div className="flex items-center justify-between">
             <AnimatePresence>
               {isSaving && (
