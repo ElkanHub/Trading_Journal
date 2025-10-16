@@ -1,7 +1,7 @@
 'use client';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, database } from '@/lib/firebase';
+import { auth, realtimeDb } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ref, get } from 'firebase/database';
@@ -21,7 +21,7 @@ export function AuthWrapper({ children }: { children: React.ReactNode }) {
     }
 
     const checkOnboarding = async () => {
-      const onboardingRef = ref(database, `users/${user.uid}/onboarding`);
+      const onboardingRef = ref(realtimeDb, `users/${user.uid}/onboarding`);
       const snapshot = await get(onboardingRef);
       if (snapshot.exists()) {
         setOnboardingStatus('complete');

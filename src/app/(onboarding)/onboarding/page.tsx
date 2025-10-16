@@ -5,7 +5,7 @@ import { useAuth } from '@/lib/hooks/useAuth';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { get, ref } from 'firebase/database';
-import { database } from '@/lib/firebase';
+import { realtimeDb as database} from '@/lib/firebase';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function OnboardingPage() {

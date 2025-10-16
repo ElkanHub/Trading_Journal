@@ -21,8 +21,8 @@ const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 export const firestoreDb = getFirestore(app);
 
 // Prevent SSR crash by initializing Realtime DB only in browser
-export const realtimeDb =
-  typeof window !== "undefined" ? getDatabase(app) : null;
+export const realtimeDb = getDatabase(app);
+  // typeof window !== "undefined" ? getDatabase(app) : null;
 
 export const auth = getAuth(app);
 export const googleProvider = new GoogleAuthProvider();
