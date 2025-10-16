@@ -272,7 +272,7 @@ const ThankYouScreen = ({ onComplete }: { onComplete: () => void }) => (
         <Button
           onClick={onComplete}
           size="lg"
-          className="mt-10 px-8 py-4 text-lg text-wrap font-medium bg-gradient-to-r from-emerald-500 to-green-400 hover:from-emerald-600 hover:to-green-500 text-white transition-all duration-300 shadow-xl hover:shadow-2xl"
+          className="mt-10 px-8 py-4 text-lg size-auto text-wrap font-medium bg-gradient-to-r from-emerald-500 to-green-400 hover:from-emerald-600 hover:to-green-500 text-white transition-all duration-300 shadow-xl hover:shadow-2xl"
         >
           Let's build your edge — one focused trade at a time.
           <ChevronRight className="ml-2 h-5 w-5" />
