@@ -28,14 +28,14 @@ export default function SignUpPage() {
     setPasswordError('');
     const success = await createUserWithEmailAndPassword(email, password);
     if (success) {
-      router.push('/');
+      router.push('/dashboard');
     }
   };
 
   const handleGoogleSignUp = async () => {
     const success = await signInWithGoogle();
     if (success) {
-      router.push('/');
+      router.push('/dashboard');
     }
   };
 

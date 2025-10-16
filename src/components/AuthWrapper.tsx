@@ -1,27 +1,71 @@
 'use client';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/lib/firebase';
+import { auth, database } from '@/lib/firebase';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { ref, get } from 'firebase/database';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function AuthWrapper({ children }: { children: React.ReactNode }) {
   const [user, loading] = useAuthState(auth);
   const router = useRouter();
+  const [onboardingStatus, setOnboardingStatus] = useState<'checking' | 'complete' | 'incomplete'>('checking');
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
+    if (loading) return;
+
+    if (!user) {
+      router.replace('/login');
+      return;
     }
+
+    const checkOnboarding = async () => {
+      const onboardingRef = ref(database, `users/${user.uid}/onboarding`);
+      const snapshot = await get(onboardingRef);
+      if (snapshot.exists()) {
+        setOnboardingStatus('complete');
+      } else {
+        setOnboardingStatus('incomplete');
+      }
+    };
+
+    checkOnboarding();
+
   }, [user, loading, router]);
 
-  if (loading) {
-    return <div>Loading...</div>; // Or a proper loader component
+  useEffect(() => {
+    if (onboardingStatus === 'incomplete') {
+      router.replace('/onboarding');
+    }
+  }, [onboardingStatus, router]);
+
+  if (loading || onboardingStatus === 'checking') {
+    return (
+        <div className="flex h-screen w-full items-center justify-center bg-background">
+            <div className="space-y-4 p-8 max-w-lg w-full">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-8 w-3/4" />
+                <div className="flex space-x-4 pt-4">
+                    <Skeleton className="h-10 w-1/2" />
+                    <Skeleton className="h-10 w-1/2" />
+                </div>
+                <div className="flex space-x-4 pt-4">
+                    <Skeleton className="h-10 w-1/2" />
+                    <Skeleton className="h-10 w-1/2" />
+                </div>
+            </div>
+      </div>
+    );
   }
 
-  if (!user) {
-    return null; // Or a redirect component
+  if (onboardingStatus === 'incomplete') {
+    return null; // Redirecting
   }
 
-  return <>{children}</>;
+  if (user && onboardingStatus === 'complete') {
+    return <>{children}</>;
+  }
+
+  return null;
 }
