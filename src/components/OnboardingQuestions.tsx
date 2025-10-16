@@ -349,6 +349,24 @@ export default function OnboardingQuestions() {
       </div>
 
       <div className="relative z-10 w-full p-4 sm:p-8">
+        {currentStep >= 0 && currentStep < totalQuestions && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full max-w-3xl mx-auto mb-8"
+          >
+            <div className="flex items-center gap-4">
+              <span className="text-lg font-semibold text-white/80">
+                {currentStep + 1} / {totalQuestions}
+              </span>
+              <Progress
+                value={progress}
+                className="w-full h-3 bg-white/10 [&>*]:bg-gradient-to-r [&>*]:from-sky-500 [&>*]:to-cyan-400"
+              />
+            </div>
+          </motion.div>
+        )}
         <AnimatePresence mode="wait">
           {currentStep === -1 && (
             <WelcomeScreen key="welcome" onComplete={() => setCurrentStep(0)} />
@@ -526,17 +544,6 @@ export default function OnboardingQuestions() {
                 </motion.div>
               )}
             </AnimatePresence>
-            {currentStep >= 0 && currentStep < totalQuestions && (
-              <div className="w-full flex items-center gap-4">
-                <span className="text-lg font-semibold text-white/80">
-                  {currentStep + 1} / {totalQuestions}
-                </span>
-                <Progress
-                  value={progress}
-                  className="w-full h-3 bg-white/10 [&>*]:bg-gradient-to-r [&>*]:from-sky-500 [&>*]:to-cyan-400"
-                />
-              </div>
-            )}
           </div>
         </footer>
       </div>
